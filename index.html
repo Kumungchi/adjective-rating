@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Hodnocení českých přídavných jmen</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js"></script>
+    <script type="module" src="script.js" defer></script> <!-- Adding defer to ensure it loads after HTML -->
+</head>
+<body>
+    <header>
+        <h1>Hodnocení českých přídavných jmen</h1>
+        <p>Ohodnoťte přídavné jména na základě jejich emocionálního dopadu. Kliknutím na možnosti pod pojmem
+        <span class="info" data-info="Arousal se vztahuje k intenzitě emoce.">Arousal</span> vyberte kliknutím jednu z možností, obdobně i učintě i pro 
+        <span class="info" data-info="Valence se vztahuje k pozitivitě, neutralitě nebo negativitě emoce.">Valenci</span>. </p>
+    </header>
+    
+    <main>
+        <section id="adjectiveDisplay">
+            <h2>Loading...</h2> <!-- This will be replaced by the adjective -->
+        </section>
+        </section>
+        <section id="controls">
+            <div class="control-group">
+                <h3>Arousal</h3>
+                <button class="rating-button">Vysoký</button>
+                <button class="rating-button">Střední</button>
+                <button class="rating-button">Nízký</button>
+            </div>
+            <div class="control-group">
+                <h3>Valence</h3>
+                <button class="rating-button">Pozitivní</button>
+                <button class="rating-button">Neutrální</button>
+                <button class="rating-button">Negativní</button>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>© 2024 Matias Bunnik</p>
+    </footer>
+</body>
+</html>
+

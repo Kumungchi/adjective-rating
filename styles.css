@@ -1,0 +1,180 @@
+/* General Body Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to right, #6a82fb, #da22ff); /* Blue to purple gradient */
+    color: #333;
+    margin: 0;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    color: #ffffff; /* Adjusted for better visibility against the bright background */
+    margin-bottom: 0.5em;
+}
+
+#adjectiveDisplay {
+    color: #ffffff; /* Adjusted for better visibility against the bright background */
+    margin-top: 20px; /* Adjust this value to move it down */
+    font-size: 2em; /* Increase the size if needed */
+}
+
+header p {
+    font-size: 1.5em;
+    color: #ffffff; /* Maintaining readability */
+    max-width: 800px;
+}
+
+
+main {
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;   /* Stack buttons vertically */
+    align-items: center;      /* Center-align items within each group */
+    margin: 10px;             /* Space around each group */
+    flex: 1 0 30%;
+    color: #ffffff; /* Adjusted for better visibility against the bright background */
+
+}
+
+.control-group h3 {
+    font-size: 2em; /* Increased size */
+}
+
+
+#controls {
+    display: flex;
+    justify-content: space-around;  /* Align items in the center of the container */
+    flex-wrap: wrap;          /* Allow items to wrap as needed */
+    align-items: center;            /* Aligns items vertically in the center */
+    width: 100%;                    /* Ensures the container takes full width */
+    max-width: 960px;               /* Sets a max-width to prevent overstretch on larger screens */
+    margin: 50px auto;              /* Centers the container and adds vertical space */
+}
+
+.rating-button {
+    background-color: #4ecdc4; /* Cyan-like color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 15px 25px;
+    font-size: calc(12px + 1.5vw);
+    text-align: center;
+    width: 100%;
+    cursor: pointer;
+    margin: 5px;
+    transition: all 0.3s ease, transform 0.2s ease;
+}
+
+.rating-button:hover {
+    background-color: #134e48; /* Darker shade for hover */
+    transform: translateY(-2px);
+}
+
+footer {
+    text-align: center;
+    color: #ffffff; /* for better visibility */
+    margin-top: auto;
+    width: 100%;
+    padding: 20px 0;
+}
+
+/* Tooltip styling */
+.info {
+    position: relative; /* Needed to position the tooltip */
+    cursor: help; /* Changes the cursor to indicate clickable/helpful item */
+    text-decoration: underline; /* Underline to indicate interactivity */
+}
+
+.info:hover::after {
+    content: attr(data-info); /* Uses the content from data-info attribute for the tooltip */
+    position: absolute; /* Positions relative to the parent .info element */
+    left: 0;
+    bottom: 100%; /* Positions the tooltip above the span element */
+    background-color: #333; /* Tooltip background color */
+    color: white; /* Text color inside the tooltip */
+    padding: 5px 10px; /* Padding inside the tooltip */
+    border-radius: 4px; /* Rounded corners for the tooltip */
+    white-space: nowrap; /* Ensures the tooltip text stays on one line */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2); /* Optional: adds shadow for better visibility */
+    z-index: 1000; /* Ensures the tooltip is above other content */
+    opacity: 0; /* Start with tooltip invisible */
+    transition: opacity 0.3s ease-in-out; /* Smooth transition for appearing */
+    pointer-events: none; /* Prevents tooltip from interfering with clicks */
+}
+
+.info:hover::after {
+    opacity: 1; /* Make the tooltip visible on hover */
+}
+
+
+.error-message, .feedback-message {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #f44336; /* Red background for error */
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    opacity: 0;
+    animation: fadeInOut 5s forwards;
+}
+
+.feedback-message {
+    background-color: #4CAF50; /* Green background for success */
+}
+
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0; }
+    10%, 90% { opacity: 1; }
+}
+
+
+/* Responsive Design Adjustments */
+@media (max-width: 768px) {
+    header p, footer p {
+        font-size: 0.9em; /* Smaller text on smaller devices */
+    }
+
+    #controls {
+        flex-direction: column; /* Stack controls vertically on smaller screens */
+        margin-top: 30px;           /* Reduced top margin */
+    }
+
+    #adjectiveDisplay {
+        font-size: 1.5em; /* Smaller font size for the loading text on smaller screens */
+    }
+
+    .rating-button {
+        padding: 10px 20px; /* Smaller padding for smaller devices */
+        font-size: 16px; /* Smaller font size for smaller screens */
+        
+    }
+    .control-group {
+        flex: 1 0 100%;             /* Makes each group take full width of the container */
+    
+    }
+    .control-group h3 {
+        font-size: 1.8em; /* Adjust size as needed */
+    }
+}
