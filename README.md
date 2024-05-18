@@ -19,4 +19,4 @@ Data Collection: Ratings are stored in Firebase Firestore, with each adjective t
 - Firebase Firestore: For storing adjective data and user ratings.
 - GitHub Pages: For hosting the static website.
 
-This project was created in collaboration with the Department of Psychology at the University of Ostrava.
+**This project was created in collaboration with the Department of Psychology at the University of Ostrava.**
