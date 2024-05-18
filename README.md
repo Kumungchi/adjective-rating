@@ -2,7 +2,8 @@
 ## Aim of the Project
 
 The aim of this project is to collect user ratings for a set of Czech adjectives based on their perceived valence (positive, neutral, negative) and arousal (high, medium, low).
-Description
+
+## Description
 
 This application is built with HTML, CSS, and JavaScript, and uses Firebase Firestore for data storage. Hosted on GitHub Pages, it allows users to interactively rate words and submit their responses to the Firestore database.
 
