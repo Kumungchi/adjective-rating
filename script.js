@@ -80,6 +80,13 @@ function displayWord() {
     currentArousal = null;
 
     const adjectiveDisplay = document.getElementById('adjectiveDisplay');
+    const ratingButtons = document.querySelectorAll('.rating-button');
+
+    // Remove selected class from all buttons
+    ratingButtons.forEach(button => {
+        button.classList.remove('selected');
+    });
+
     if (adjectiveDisplay) {
         if (currentWordIndex < totalAdjectives) {
             adjectiveDisplay.innerHTML = `<h2>${words[currentWordIndex].word}</h2>`;
@@ -114,9 +121,27 @@ function showFeedbackMessage(message) {
 }
 
 // Handle rating button clicks or touches
-async function rateWord(valence, arousal) {
-    if (valence) currentValence = valence;
-    if (arousal) currentArousal = arousal;
+async function rateWord(valence, arousal, button) {
+    const group = button.closest('.control-group');
+    const buttonsInGroup = group.querySelectorAll('.rating-button');
+
+    // Toggle the selected class
+    button.classList.toggle('selected');
+
+    // Remove selected class from other buttons in the same group
+    buttonsInGroup.forEach(btn => {
+        if (btn !== button) {
+            btn.classList.remove('selected');
+        }
+    });
+
+    if (button.classList.contains('selected')) {
+        if (valence) currentValence = valence;
+        if (arousal) currentArousal = arousal;
+    } else {
+        if (valence) currentValence = null;
+        if (arousal) currentArousal = null;
+    }
 
     if (currentValence && currentArousal) {
         const word = words[currentWordIndex];
@@ -134,10 +159,11 @@ async function rateWord(valence, arousal) {
                         evaluations: increment(1),
                         ratings: arrayUnion({ valence: currentValence, arousal: currentArousal })
                     });
+
+                    showFeedbackMessage("Rating submitted successfully!");
                 }
             }
 
-            showFeedbackMessage("Rating submitted successfully!");
             currentWordIndex++;
             displayWord();
         } catch (error) {
@@ -153,13 +179,13 @@ function setupEventListeners() {
     const valenceButtons = document.querySelectorAll(".control-group:nth-child(2) .rating-button");
 
     arousalButtons.forEach(button => {
-        button.addEventListener("click", () => rateWord(null, button.innerText.toLowerCase()));
-        button.addEventListener("touchstart", () => rateWord(null, button.innerText.toLowerCase()));
+        button.addEventListener("click", () => rateWord(null, button.innerText.toLowerCase(), button));
+        button.addEventListener("touchstart", () => rateWord(null, button.innerText.toLowerCase(), button));
     });
 
     valenceButtons.forEach(button => {
-        button.addEventListener("click", () => rateWord(button.innerText.toLowerCase(), null));
-        button.addEventListener("touchstart", () => rateWord(button.innerText.toLowerCase(), null));
+        button.addEventListener("click", () => rateWord(button.innerText.toLowerCase(), null, button));
+        button.addEventListener("touchstart", () => rateWord(button.innerText.toLowerCase(), null, button));
     });
 }
 
