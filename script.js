@@ -1,5 +1,6 @@
 // Import Firebase modules from CDN
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAnalytics, logEvent } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js";
 import { getFirestore, collection, getDocs, updateDoc, increment, arrayUnion, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // Firebase configuration
@@ -15,6 +16,7 @@ const firebaseConfig = {
 
 // Initialize Firebase and Firestore
 const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 const db = getFirestore(app);
 
 let currentWordIndex = 0;
