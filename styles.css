@@ -247,7 +247,7 @@ footer {
     display: inline-block;
     width: 1em;
     height: 1em;
-    background-color: blue; /* Change this to blue */
+    background-color: gray; /* Changed to gray */
     color: white;
     border-radius: 50%;
     text-align: center;
