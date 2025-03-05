@@ -1,0 +1,294 @@
+/* adjectiverating.css */
+
+/* General Body Styles for adjective rating page */
+body#adjectiveRatingContainer {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--primary-color);
+    color: #333;
+    margin: 0;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Header styles for adjective rating page */
+#adjectiveRatingContainer header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#adjectiveRatingContainer header h1 {
+    color: #333;    
+    font-size: 2.5em;
+    margin-bottom: 0.5em;
+}
+
+/* Specific styles for the rating buttons */
+#adjectiveRatingContainer .rating-button {
+    background-color: var(--secondary-color);
+    color: #333;
+    border: none;
+    border-radius: 5px;
+    padding: 15px 25px;
+    font-size: calc(12px + 1vw);
+    width: 100%;
+    max-width: 200px;
+    cursor: pointer;
+    margin: 5px;
+    transition: all 0.3s ease;
+}
+
+#adjectiveRatingContainer .rating-button.selected {
+    background-color: #444444; /* Updated to a more prominent dark gray for selected state */
+    color: white;
+}
+
+#adjectiveRatingContainer .rating-button:hover {
+    background-color: #666666; /* Consistent darker color for hover */
+}
+
+#adjectiveRatingContainer .rating-button:focus {
+    outline: none;
+}
+
+/* Styles for the rating page container */
+#adjectiveRatingContainer #ratingPage {
+    width: 100%;
+    max-width: 800px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Centering Loading text */
+#adjectiveRatingContainer #adjectiveDisplay.centered-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+}
+
+/* Controls styling */
+#adjectiveRatingContainer #controls {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+/* Button container styling */
+#adjectiveRatingContainer .button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Footer styling for adjective rating page */
+#adjectiveRatingContainer footer {
+    text-align: center;
+    color: #333;
+    width: 100%;
+    padding: 20px 0;
+    background-color: var(--secondary-color);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}
+
+/* Confirmation button container and styling */
+#adjectiveRatingContainer .confirm-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
+}
+
+#adjectiveRatingContainer .confirmation-button {
+    background-color: #bfbfbf;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#adjectiveRatingContainer .confirmation-button:hover {
+    background-color: #808080;
+    transform: scale(1.05);
+}
+
+#adjectiveRatingContainer .confirmation-button:active {
+    background-color: #444444;
+    transform: scale(1.02);
+}
+
+/* Added to provide user with feedback after clicking confirm */
+#adjectiveRatingContainer .confirmation-button:focus {
+    outline: none;
+}
+
+/* Progress Indicator */
+#progress-container {
+    width: 100%;
+    text-align: center;
+    margin: 10px 0;
+    font-size: 1.2em;
+    color: #333;
+}
+
+/* Modal okno */
+.modal {
+    display: none; /* Skryté ve výchozím stavu */
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6);
+}
+
+.modal-content {
+    background-color: #fff;
+    border-radius: 8px;
+    margin: 15% auto;
+    padding: 20px;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.close-button {
+    float: right;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+    #adjectiveRatingContainer header h1 {
+        font-size: 2em;
+    }
+
+    #adjectiveRatingContainer .control-group h3 {
+        font-size: 1.5em;
+    }
+
+    #adjectiveRatingContainer .rating-button {
+        font-size: 1em;
+        padding: 10px 20px;
+    }
+
+    #adjectiveRatingContainer #controls {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    #adjectiveRatingContainer header h1 {
+        font-size: 1.8em;
+    }
+
+    #adjectiveRatingContainer .control-group h3 {
+        font-size: 1.3em;
+    }
+
+    #adjectiveRatingContainer .rating-button {
+        font-size: 1em;
+        padding: 12px 20px;
+    }
+
+    #adjectiveRatingContainer #controls {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    #adjectiveRatingContainer header h1 {
+        font-size: 1.5em;
+    }
+
+    #adjectiveRatingContainer .control-group h3 {
+        font-size: 1.2em;
+    }
+
+    #adjectiveRatingContainer .rating-button {
+        font-size: 0.8em;
+        padding: 6px 12px;
+        max-width: 150px;
+    }
+
+    .modal-content {
+        width: 90%;
+        margin-top: 30%;
+    }
+}
+
+/* Color Palette for a Minimalistic, Neutral Look */
+:root {
+    --primary-color: #f5f5f5;
+    --secondary-color: #bfbfbf;
+    --accent-color: #808080;
+}
+
+.info-icon-container {
+    position: relative;
+    display: inline-block;
+    margin: 10px auto;
+    text-align: center;
+}
+
+.info-icon {
+    background-color: var(--accent-color);
+    color: #fff;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.tooltip {
+    visibility: hidden;
+    width: 240px;
+    background-color: #333;
+    color: #fff;
+    text-align: left;
+    border-radius: 6px;
+    padding: 10px;
+    position: absolute;
+    top: 30px; /* pozice pod ikonou */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    font-size: 0.8em;
+    line-height: 1.3em;
+}
+
+.info-icon-container:hover .tooltip {
+    visibility: visible;
+}
+

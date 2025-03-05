@@ -1,10 +1,17 @@
+/* Global Variables */
+:root {
+    --primary-color: #f5f5f5;
+    --secondary-color: #bfbfbf;
+    --accent-color: #808080;
+}
+
 /* General Body Styles */
 body {
     font-family: 'Arial', sans-serif;
-    background: linear-gradient(to right, #6a82fb, #da22ff); /* Blue to purple gradient */
+    background-color: var(--primary-color);
     color: #333;
     margin: 0;
-    padding: 30px;
+    padding: 2vw;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -12,174 +19,343 @@ body {
     overflow-x: hidden;
 }
 
+/* Header Styles */
 header {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 2rem;
 }
 
 header h1 {
-    color: #ffffff; /* Adjusted for better visibility against the bright background */
+    color: #333;
+    font-size: calc(1.5rem + 1vw);
     margin-bottom: 0.5em;
 }
 
-#adjectiveDisplay {
-    color: #ffffff; /* Adjusted for better visibility against the bright background */
-    margin-top: 20px; /* Adjust this value to move it down */
-    font-size: 2em; /* Increase the size if needed */
-}
-
-header p {
-    font-size: 1.5em;
-    color: #ffffff; /* Maintaining readability */
+/* Introductory Page (index.html) and Practice Areas */
+#intro,
+#practiceArea,
+#demographicSurvey,
+#ratingPage {
+    width: 95%;
     max-width: 800px;
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+    text-align: center;
 }
 
+/* Demographic Survey Specific Styles */
+#demographicSurvey h3 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+}
 
-main {
-    width: 100%;
-    max-width: 600px;
-    text-align: center;
+#demographicSurvey p {
+    margin-bottom: 30px;
+    color: #666;
+}
+
+#demographicSurvey form {
     display: flex;
     flex-direction: column;
+    gap: 1.5rem;
+}
+
+#demographicSurvey label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+#demographicSurvey input[type="number"],
+#demographicSurvey input[type="text"],
+#demographicSurvey select {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+#demographicSurvey input:focus,
+#demographicSurvey select:focus {
+    border-color: var(--accent-color);
+    outline: none;
+}
+
+#demographicSurvey button {
+    padding: 1rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#submitDemographicButton {
+    background-color: var(--accent-color);
+    color: #fff;
+}
+
+#submitDemographicButton:hover {
+    background-color: #666;
+    transform: scale(1.02);
+}
+
+#startButton {
+    background-color: var(--secondary-color);
+    color: #333;
+    margin-top: 1rem;
+}
+
+#startButton:hover {
+    background-color: #999;
+}
+
+/* Rating Page Specific Styles */
+#ratingWord {
+    font-size: 2em;
+    margin-bottom: 1.25rem;
+}
+
+#controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     align-items: center;
+    gap: 1rem;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 .control-group {
     display: flex;
-    flex-direction: column;   /* Stack buttons vertically */
-    align-items: center;      /* Center-align items within each group */
-    margin: 10px;             /* Space around each group */
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem;
     flex: 1 0 30%;
-    color: #ffffff; /* Adjusted for better visibility against the bright background */
-
 }
 
 .control-group h3 {
-    font-size: 2em; /* Increased size */
-}
-
-
-#controls {
-    display: flex;
-    justify-content: space-around;  /* Align items in the center of the container */
-    flex-wrap: wrap;          /* Allow items to wrap as needed */
-    align-items: center;            /* Aligns items vertically in the center */
-    width: 100%;                    /* Ensures the container takes full width */
-    max-width: 960px;               /* Sets a max-width to prevent overstretch on larger screens */
-    margin: 50px auto;              /* Centers the container and adds vertical space */
+    font-size: 1.8em;
+    margin-bottom: 0.5rem;
 }
 
 .rating-button {
-    background-color: #4ecdc4; /* Cyan-like color */
-    color: white;
+    background-color: var(--secondary-color);
+    color: #333;
     border: none;
     border-radius: 5px;
-    padding: 15px 25px;
-    font-size: calc(12px + 1.5vw);
-    text-align: center;
+    padding: 0.8rem 1.5rem;
+    font-size: calc(0.8rem + 0.5vw);
     width: 100%;
+    max-width: 200px;
     cursor: pointer;
-    margin: 5px;
-    transition: all 0.3s ease, transform 0.2s ease;
+    margin: 0.5rem;
+    transition: all 0.3s ease;
 }
 
 .rating-button.selected {
-    background-color: #134e48; /* This color will be used to highlight the selected button */
+    background-color: #444444;
     color: white;
 }
 
 .rating-button:hover {
-    background-color: #134e48; /* Darker shade for hover */
-    
+    background-color: #666666;
 }
 
+.rating-button:focus {
+    outline: none;
+}
+
+.confirmation-button {
+    background-color: #bfbfbf;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 0.8rem 1.2rem;
+    cursor: pointer;
+    margin-top: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.confirmation-button:hover {
+    background-color: #808080;
+    transform: scale(1.05);
+}
+
+.confirmation-button:active {
+    background-color: #444444;
+    transform: scale(1.02);
+}
+
+.confirmation-button:focus {
+    outline: none;
+}
+
+/* Highlighted Words Styles */
+.highlight-word {
+    background-color: var(--accent-color);
+    color: #fff;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.highlight-word .test-word {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #fff;
+}
+
+.word-hint {
+    font-size: 0.9em;
+    color: #fff; /* Changed from #ddd to #fff */
+}
+
+/* Footer Styles */
 footer {
     text-align: center;
-    color: #ffffff; /* for better visibility */
-    margin-top: auto;
+    padding: 1rem;
+    background-color: #f8f9fa;
     width: 100%;
-    padding: 20px 0;
+    margin-top: 2rem;
 }
 
-/* Tooltip styling */
-.info {
-    position: relative; /* Needed to position the tooltip */
-    cursor: help; /* Changes the cursor to indicate clickable/helpful item */
-    text-decoration: underline; /* Underline to indicate interactivity */
+/* Concept Explanation Block */
+.concept-explanation {
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background-color: #ffffff; /* Změněno z #f8f9fa na #ffffff */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
 }
 
-.info:hover::after {
-    content: attr(data-info); /* Uses the content from data-info attribute for the tooltip */
-    position: absolute; /* Positions relative to the parent .info element */
-    left: 0;
-    bottom: 100%; /* Positions the tooltip above the span element */
-    background-color: #333; /* Tooltip background color */
-    color: white; /* Text color inside the tooltip */
-    padding: 5px 10px; /* Padding inside the tooltip */
-    border-radius: 4px; /* Rounded corners for the tooltip */
-    white-space: nowrap; /* Ensures the tooltip text stays on one line */
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2); /* Optional: adds shadow for better visibility */
-    z-index: 1000; /* Ensures the tooltip is above other content */
-    opacity: 0; /* Start with tooltip invisible */
-    transition: opacity 0.3s ease-in-out; /* Smooth transition for appearing */
-    pointer-events: none; /* Prevents tooltip from interfering with clicks */
-}
-
-.info:hover::after {
-    opacity: 1; /* Make the tooltip visible on hover */
-}
-
-
-.error-message, .feedback-message {
-    position: fixed;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #f44336; /* Red background for error */
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    opacity: 0;
-    animation: fadeInOut 5s forwards;
-}
-
-.feedback-message {
-    background-color: #4CAF50; /* Green background for success */
-}
-
+/* Animace pro zprávy */
 @keyframes fadeInOut {
     0%, 100% { opacity: 0; }
     10%, 90% { opacity: 1; }
 }
 
+/* Info Icon Styles */
+.info-icon {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    background-color: blue; /* Change this to blue */
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 0.5em;
+}
+
+.info-icon-container {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip {
+    visibility: hidden;
+    width: 200px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 0.5em;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%; /* Position the tooltip above the icon */
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #333 transparent transparent transparent;
+}
+
+.info-icon-container:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
 
 /* Responsive Design Adjustments */
-@media (max-width: 768px) {
-    header p, footer p {
-        font-size: 0.9em; /* Smaller text on smaller devices */
+@media (max-width: 1024px) {
+    header h1 {
+        font-size: calc(1.5rem + 1vw);
     }
 
-    #controls {
-        flex-direction: column; /* Stack controls vertically on smaller screens */
-        margin-top: 30px;           /* Reduced top margin */
-    }
-
-    #adjectiveDisplay {
-        font-size: 1.5em; /* Smaller font size for the loading text on smaller screens */
+    .control-group h3 {
+        font-size: 1.5em;
     }
 
     .rating-button {
-        padding: 10px 20px; /* Smaller padding for smaller devices */
-        font-size: 16px; /* Smaller font size for smaller screens */
-        
-    }
-    .control-group {
-        flex: 1 0 100%;             /* Makes each group take full width of the container */
-    
-    }
-    .control-group h3 {
-        font-size: 1.8em; /* Adjust size as needed */
+        font-size: 1rem;
+        padding: 0.8rem 1.2rem;
     }
 }
+
+@media (max-width: 768px) {
+    header h1 {
+        font-size: calc(1.2rem + 1vw);
+    }
+
+    .control-group h3 {
+        font-size: 1.3em;
+    }
+
+    .rating-button {
+        font-size: 0.9em;
+        padding: 0.7rem 1rem;
+    }
+
+    #controls {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.5em;
+    }
+
+    .control-group h3 {
+        font-size: 1.2em;
+    }
+
+    .rating-button {
+        font-size: 0.8em;
+        padding: 0.6rem 1rem;
+        max-width: 150px;
+    }
+}
+
+@media (max-width: 320px) {
+    /* Další úpravy pro velmi malé obrazovky */
+    #demographicSurvey,
+    #practiceArea,
+    #ratingPage {
+        padding: 1.5rem;
+    }
+
+    #controls {
+        gap: 0.5rem;
+    }
+}
+

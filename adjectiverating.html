@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Hodnocení českých přídavných jmen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css"> <!-- Original shared styles -->
+    <link rel="stylesheet" href="adjectiverating.css"> <!-- Specific styles for adjective rating page -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <script type="module" src="script.js" defer></script>
+</head>
+<body id="adjectiveRatingContainer">
+    <header>
+        <h1>Hodnocení českých přídavných jmen</h1>
+    </header>
+    
+    <main>
+        <section id="adjectiveDisplay" class="centered-content">
+            <h2>Loading...</h2> <!-- This will be replaced by the adjective -->
+        </section>
+
+        <!-- Progress Indicator -->
+        <div id="progress-container">
+            <span id="progress-text">0/15</span>
+        </div>
+
+        <div class="info-icon-container">
+            <span class="info-icon">i</span>
+            <div class="tooltip">
+                <p><strong>Arousal:</strong> Měří intenzitu emocí (Vysoký, Střední, Nízký).</p>
+                <p><strong>Valence:</strong> Určuje, zda je pocit pozitivní, neutrální nebo negativní.</p>
+            </div>
+        </div>
+
+        <section id="controls">
+            <div class="control-group">
+                <h3>Arousal</h3>
+                <div class="button-container">
+                    <button class="rating-button" onclick="selectOption(this)">Vysoký</button>
+                    <button class="rating-button" onclick="selectOption(this)">Střední</button>
+                    <button class="rating-button" onclick="selectOption(this)">Nízký</button>
+                </div>
+            </div>
+            <div class="control-group">
+                <h3>Valence</h3>
+                <div class="button-container">
+                    <button class="rating-button" onclick="selectOption(this)">Pozitivní</button>
+                    <button class="rating-button" onclick="selectOption(this)">Neutrální</button>
+                    <button class="rating-button" onclick="selectOption(this)">Negativní</button>
+                </div>
+            </div>
+        </section>
+
+        <div class="confirm-container">
+            <button class="confirmation-button" id="confirmRatingButton">Potvrdit hodnocení</button>
+        </div>
+
+        <!-- Modal okno po 15 hodnoceních -->
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <p>Děkujeme za Vaši účast.</p>
+                <p>Máte-li dotazy, kontaktujte mě na email: email@example.com</p>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <p>© 2024 Matias Bunnik</p>
+    </footer>
+</body>
+</html>

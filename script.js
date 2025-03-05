@@ -1,11 +1,15 @@
+// Introduction website
+document.getElementById('startButton').addEventListener('click', function() {
+    window.location.href = 'adjectiverating.html';
+});
+
 // Import Firebase modules from CDN
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAnalytics, logEvent } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js";
-import { getFirestore, collection, getDocs, updateDoc, increment, arrayUnion, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, updateDoc, increment, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyD3QwaEeJjEddfLgHzc760FYmwrdeZnxAE",
+    apiKey: "AIzaSyC4H21ACGMoYAnK5_Rmy2l_Xb5mn4OwoSg",
     authDomain: "valencearousal.firebaseapp.com",
     projectId: "valencearousal",
     storageBucket: "valencearousal.appspot.com",
@@ -16,7 +20,6 @@ const firebaseConfig = {
 
 // Initialize Firebase and Firestore
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 const db = getFirestore(app);
 
 let currentWordIndex = 0;
@@ -24,28 +27,57 @@ const totalAdjectives = 15;
 let words = [];
 let currentValence = null;
 let currentArousal = null;
+let userId = null;
 
-// Fetch adjectives from Firestore and sort them based on evaluations
-async function fetchAdjectives() {
-    try {
-        const querySnapshot = await getDocs(collection(db, 'adjektiva'));
-        const allWords = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+// Uložení uživatelských dat
+function saveUserData() {
+    const age = document.getElementById('age').value;
+    const gender = document.getElementById('gender').value;
+    const education = document.getElementById('education').value;
+    const occupation = document.getElementById('occupation').value;
+    const nativeLanguage = document.getElementById('nativeLanguage').value;
 
-        const groupedByEvaluations = groupByEvaluations(allWords);
-        const sortedAndShuffledWords = sortAndShuffleGroups(groupedByEvaluations);
-
-        words = sortedAndShuffledWords.slice(0, totalAdjectives);
-        displayWord();
-    } catch (error) {
-        console.error("Error fetching adjectives: ", error);
-        displayErrorMessage("Failed to fetch adjectives. Please check your network connection and try again.");
+    if (age && gender && education && occupation && nativeLanguage) {
+        const userRef = doc(collection(db, "users"));
+        setDoc(userRef, {
+            age: age,
+            gender: gender,
+            education: education,
+            occupation: occupation,
+            nativeLanguage: nativeLanguage,
+            timestamp: new Date().toISOString()
+        }).then(() => {
+            userId = userRef.id;
+            document.getElementById("startButton").style.display = "block";
+            console.log("Uživatel uložen s ID:", userId);
+        }).catch(error => {
+            console.error("Chyba při ukládání uživatele: ", error);
+        });
+    } else {
+        alert("Vyplňte všechna pole.");
     }
 }
 
-// Group adjectives by their number of evaluations
+// Načtení slov z Firestore
+async function fetchAdjectives() {
+    try {
+        const querySnapshot = await getDocs(collection(db, "adjectives"));
+        let allWords = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+        // Skupinování podle počtu hodnocení
+        const groupedWords = groupByEvaluations(allWords);
+        words = sortAndShuffleGroups(groupedWords);
+
+        displayWord();
+    } catch (error) {
+        console.error("Chyba při načítání slov: ", error);
+    }
+}
+
+// Skupinování slov podle počtu hodnocení
 function groupByEvaluations(words) {
     return words.reduce((groups, word) => {
-        const count = word.evaluations || 0; // Default to 0 if evaluations is not set
+        const count = word.evaluations || 0;
         if (!groups[count]) {
             groups[count] = [];
         }
@@ -54,7 +86,7 @@ function groupByEvaluations(words) {
     }, {});
 }
 
-// Sort groups and shuffle within each group
+// Řazení skupin podle nejméně hodnocených a náhodné míchání uvnitř
 function sortAndShuffleGroups(groups) {
     const sortedKeys = Object.keys(groups).sort((a, b) => a - b);
     let sortedAndShuffledWords = [];
@@ -68,7 +100,7 @@ function sortAndShuffleGroups(groups) {
     return sortedAndShuffledWords;
 }
 
-// Shuffle array to randomize words within a group
+// Fisher-Yates míchání pole
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -76,102 +108,57 @@ function shuffleArray(array) {
     }
 }
 
-// Display the current word or a completion message
+// Zobrazení aktuálního slova
 function displayWord() {
     currentValence = null;
     currentArousal = null;
 
-    const adjectiveDisplay = document.getElementById('adjectiveDisplay');
-    const ratingButtons = document.querySelectorAll('.rating-button');
-
-    // Remove selected class from all buttons
-    ratingButtons.forEach(button => {
-        button.classList.remove('selected');
-    });
-
-    if (adjectiveDisplay) {
-        if (currentWordIndex < totalAdjectives) {
-            adjectiveDisplay.innerHTML = `<h2>${words[currentWordIndex].word}</h2>`;
-        } else {
-            adjectiveDisplay.innerHTML = `<h2>Děkujeme za vaše hodnocení!</h2>`;
-        }
+    if (currentWordIndex < totalAdjectives) {
+        document.getElementById("adjectiveDisplay").innerHTML = `<h2>${words[currentWordIndex].word}</h2>`;
+        document.getElementById("progress-text").innerText = `${currentWordIndex + 1}/${totalAdjectives}`;
     } else {
-        console.error("Element with ID 'adjectiveDisplay' not found.");
+        document.getElementById("adjectiveDisplay").innerHTML = `<h2>Děkujeme za hodnocení!</h2>`;
     }
 }
 
-// Display error message
-function displayErrorMessage(message) {
-    const errorMessage = document.createElement('div');
-    errorMessage.className = 'error-message';
-    errorMessage.innerText = message;
-    document.body.appendChild(errorMessage);
-    setTimeout(() => {
-        errorMessage.remove();
-    }, 5000); // Remove error message after 5 seconds
-}
-
-// Show feedback message
-function showFeedbackMessage(message) {
-    const feedbackMessage = document.createElement('div');
-    feedbackMessage.className = 'feedback-message';
-    feedbackMessage.innerText = message;
-    document.body.appendChild(feedbackMessage);
-    setTimeout(() => {
-        feedbackMessage.remove();
-    }, 2000); // Remove feedback message after 2 seconds
-}
-
-// Handle rating button clicks or touches
-async function rateWord(valence, arousal, button) {
-    const group = button.closest('.control-group');
-    const buttonsInGroup = group.querySelectorAll('.rating-button');
-
-    // Toggle the selected class
-    button.classList.toggle('selected');
-
-    // Remove selected class from other buttons in the same group
-    buttonsInGroup.forEach(btn => {
-        if (btn !== button) {
-            btn.classList.remove('selected');
-        }
-    });
-
-    if (button.classList.contains('selected')) {
-        if (valence) currentValence = valence;
-        if (arousal) currentArousal = arousal;
-    } else {
-        if (valence) currentValence = null;
-        if (arousal) currentArousal = null;
+// Hodnocení slov a uložení do Firestore
+async function rateWord(valence, arousal) {
+    if (!userId) {
+        alert("Nejprve vyplňte demografický dotazník.");
+        return;
     }
 
-    if (currentValence && currentArousal) {
-        const word = words[currentWordIndex];
-        const wordRef = doc(db, 'adjektiva', word.id.toString());
+    const word = words[currentWordIndex];
 
-        try {
-            // Get the current document
-            const docSnapshot = await getDoc(wordRef);
-            if (docSnapshot.exists()) {
-                const data = docSnapshot.data();
+    // Uložíme hodnocení do kolekce "ratings"
+    const ratingRef = doc(collection(db, "ratings"));
+    await setDoc(ratingRef, {
+        userId: userId,
+        wordId: word.id,
+        word: word.word,
+        valence: valence,
+        arousal: arousal,
+        timestamp: new Date().toISOString()
+    });
 
-                // Only update if the new rating is different from the default valence and arousal
-                if (data.valence !== currentValence || data.arousal !== currentArousal) {
-                    await updateDoc(wordRef, {
-                        evaluations: increment(1),
-                        ratings: arrayUnion({ valence: currentValence, arousal: currentArousal })
-                    });
+    // Aktualizujeme počet hodnocení v kolekci "adjectives"
+    const wordRef = doc(db, "adjectives", word.id);
+    await updateDoc(wordRef, {
+        evaluations: increment(1)
+    });
 
-                    showFeedbackMessage("Rating submitted successfully!");
-                }
-            }
+    console.log(`Uloženo: ${word.word} - Valence: ${valence}, Arousal: ${arousal}`);
+    nextWord();
+}
 
-            currentWordIndex++;
-            displayWord();
-        } catch (error) {
-            console.error("Error updating word: ", error);
-            displayErrorMessage("Failed to submit rating. Please check your network connection and try again.");
-        }
+// Další slovo
+function nextWord() {
+    currentWordIndex++;
+    if (currentWordIndex < totalAdjectives) {
+        displayWord();
+    } else {
+        document.getElementById("adjectiveDisplay").innerHTML = `<h2>Děkujeme za účast!</h2>`;
+        document.getElementById("modal").style.display = 'block';
     }
 }
 
@@ -181,23 +168,45 @@ function setupEventListeners() {
     const valenceButtons = document.querySelectorAll(".control-group:nth-child(2) .rating-button");
 
     arousalButtons.forEach(button => {
-        button.addEventListener("click", () => rateWord(null, button.innerText.toLowerCase(), button));
-        button.addEventListener("touchstart", () => rateWord(null, button.innerText.toLowerCase(), button));
+        button.addEventListener("click", () => {
+            currentArousal = button.innerText.toLowerCase();
+            rateWord(currentValence, currentArousal);
+        });
+        button.addEventListener("touchstart", () => {
+            currentArousal = button.innerText.toLowerCase();
+            rateWord(currentValence, currentArousal);
+        });
     });
 
     valenceButtons.forEach(button => {
-        button.addEventListener("click", () => rateWord(button.innerText.toLowerCase(), null, button));
-        button.addEventListener("touchstart", () => rateWord(button.innerText.toLowerCase(), null, button));
+        button.addEventListener("click", () => {
+            currentValence = button.innerText.toLowerCase();
+            rateWord(currentValence, currentArousal);
+        });
+        button.addEventListener("touchstart", () => {
+            currentValence = button.innerText.toLowerCase();
+            rateWord(currentValence, currentArousal);
+        });
     });
 }
 
-// Function to check if the device is mobile
-function isMobileDevice() {
-    const userAgentData = navigator.userAgentData;
-    if (userAgentData) {
-        return userAgentData.mobile;
+// Funkce setupConfirmButton
+function setupConfirmButton() {
+    const confirmButton = document.querySelector('.confirmation-button');
+    if (confirmButton) {
+        confirmButton.addEventListener('click', () => {
+            if (currentValence && currentArousal) {
+                showFeedbackMessage("Děkujeme za vaše hodnocení!");
+                currentAdjective++;
+                updateProgress();
+                if (currentAdjective >= totalAdjectives) {
+                    finishRating();
+                }
+            } else {
+                displayErrorMessage("Prosím, vyberte hodnocení pro valenci a arousal před potvrzením.");
+            }
+        });
     }
-    return /Mobi|Android/i.test(navigator.userAgent);
 }
 
 // Fetch and display adjectives when the page loads
@@ -205,3 +214,54 @@ window.onload = () => {
     fetchAdjectives();
     setupEventListeners();
 };
+
+// Přidání event listenerů po načtení dokumentu
+document.addEventListener('DOMContentLoaded', function() {
+    setupConfirmButton();
+    
+    // Přidáme event listenery pro všechna rating tlačítka
+    const ratingButtons = document.querySelectorAll('.rating-button');
+    ratingButtons.forEach(button => {
+        button.addEventListener('click', () => selectOption(button));
+    });
+});
+
+// Zavření modal okna
+document.addEventListener('DOMContentLoaded', function() {
+    const closeButton = document.getElementById('closeButton');
+    const modal = document.getElementById('modal');
+
+    if (closeButton && modal) {
+        closeButton.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+
+        // Zavření modal při kliknutí mimo něj
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    const confirmPracticeButton1 = document.getElementById("confirmPracticeButton1");
+    const confirmPracticeButton2 = document.getElementById("confirmPracticeButton2");
+
+    if (confirmPracticeButton1) {
+        confirmPracticeButton1.addEventListener("click", confirmPracticeRating);
+    }
+
+    if (confirmPracticeButton2) {
+        confirmPracticeButton2.addEventListener("click", confirmPracticeRating);
+    }
+
+    // ...existing code...
+});
+
+document.getElementById("submitDemographicButton").addEventListener("click", saveUserData);
+document.getElementById("startButton").addEventListener("click", fetchAdjectives);
+document.querySelectorAll(".rating-button").forEach(button => {
+    button.addEventListener("click", () => rateWord(button.dataset.valence, button.dataset.arousal));
+});
