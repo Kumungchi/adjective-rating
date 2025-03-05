@@ -40,4 +40,4 @@ The project ensures that all data collected is anonymous and used solely for res
 
 ## Contact
 
-For any questions regarding the project, please contact **Matias Bunnik** or the **Department of Psychology at the University of Ostrava**.
+For any questions regarding the project, please contact **Matias Bunnik** at matias.bunnik.s01@osu.cz or the **Department of Psychology at the University of Ostrava**.
