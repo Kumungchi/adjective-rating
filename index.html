@@ -18,9 +18,9 @@
             <h2>Informace o průběhu</h2>
             <p>V tomto výzkumu budete hodnotit 15 přídavných jmen na základě jejich emocionálního dopadu. Budete hodnotit dvě dimenze: <strong>valence</strong> a <strong>arousal</strong>.</p>
             <p>Valence určuje, jak pozitivní, neutrální nebo negativní je pocit, který slovo vyvolává. Arousal určuje, jak intenzivní je pocit vyvolaný tímto slovem.</p>
-            <p>Pro více informací v průběhu testování klikněte na ikonu <span class="info-icon">ℹ️</span> vedle zobrazovaných slov.</p>
+            <p>Pro více informací v průběhu testování klikněte na ikonu <span class="info-icon">ℹ</span> vedle zobrazovaných slov.</p>
             <div class="info-icon-container">
-                <span class="info-icon gray-icon">ℹ️</span>
+                <span class="info-icon gray-icon">ℹ</span>
                 <div class="tooltip">
                 </div>
             </div>
@@ -29,32 +29,6 @@
         <section class="concept-container">
             <div class="concept-content">
                 <div class="concept-explanation new-explanation">
-                    <h3>Co je to Arousal a Valence?</h3>
-                    <div class="concept-item">
-                        <h4>Valence: Jak příjemné nebo nepříjemné pocity ve Vás slovo vyvolává?</h4>
-                        <p>
-                            <strong>Valence</strong> popisuje, zda slovo vyvolává <strong>pozitivní</strong> až <strong>negativní</strong> pocit.
-                        </p>
-                        <p>Příklad:</p>
-                        <ul>
-                            <li>Slovo <strong>„šťastný“</strong> má <span class="positive">pozitivní</span> valenci.</li>
-                            <li>Slovo <strong>„smutný“</strong> má <span class="negative">negativní</span> valenci.</li>
-                            <li>Slovo <strong>„běžný“</strong> může mít <span class="neutral">neutrální</span> valenci.</li>
-                        </ul>
-                    </div>
-
-                    <div class="concept-item">
-                        <h4>Arousal: Jak silný nebo slabý je pocit?</h4>
-                        <p>
-                            <strong>Arousal</strong> určuje, jak moc intenzivně slovo vyvolává emoci – od <strong>vysoké intenzity</strong> po <strong>nízkou</strong>.
-                        </p>
-                        <p>Příklad:</p>
-                        <ul>
-                            <li>Slovo <strong>„uvolněný“</strong> má <span class="low-arousal">nízký arousal</span> (pocit klidu, pohody).</li>
-                            <li>Slovo <strong>„nadšený“</strong> má <span class="high-arousal">vysoký arousal</span> (silné emoce, energie).</li>
-                            <li>Slovo <strong>„běžný“</strong> může mít <span class="medium-arousal">střední arousal</span> (není ani příliš klidné, ani příliš vzrušující).</li>
-                        </ul>
-                    </div>
                 </div>
             </div>
         </section>
@@ -65,44 +39,12 @@
             
             <div class="practiceWordContainer">
                 <div class="highlight-word">
-                    <h3><span class="test-word">ŠŤASTNÝ</span></h3>
-                    <p class="word-hint">(Pozitivní slovo s možnou různou intenzitou)</p>
                 </div>
                 <div class="control-group">
-                    <h3>Arousal (intenzita pocitu)</h3>
-                    <button class="rating-button practice-button" onclick="selectOption(this, 'Arousal: Vysoký')">Vysoký</button>
-                    <button class="rating-button practice-button" onclick="selectOption(this, 'Arousal: Střední')">Střední</button>
-                    <button class="rating-button practice-button" onclick="selectOption(this, 'Arousal: Nízký')">Nízký</button>
                 </div>
-                <div class="control-group">
-                    <h3>Valence (emoční hodnocení)</h3>
-                    <button class="rating-button practice-button" onclick="selectOption(this, 'Valence: Pozitivní')">Pozitivní</button>
-                    <button class="rating-button practice-button" onclick="selectOption(this, 'Valence: Neutrální')">Neutrální</button>
-                    <button class="rating-button practice-button" onclick="selectOption(this, 'Valence: Negativní')">Negativní</button>
-                </div>
-                <button id="confirmPracticeButton1" class="confirmation-button" onclick="confirmPracticeRating()">Potvrzuji hodnocení</button>
             </div>
 
-            <div style="margin-bottom: 2rem;"></div>
-
             <div class="practiceWordContainer">
-                <div class="highlight-word">
-                    <h3><span class="test-word">SMUTNÝ</span></h3>
-                    <p class="word-hint">(Negativní slovo s možnou různou intenzitou)</p>
-                </div>
-                <div class="control-group">
-                    <h3>Arousal (intenzita pocitu)</h3>
-                    <button class="rating-button practice-button" onclick="selectOption(this, 'Arousal: Vysoký')">Vysoký</button>
-                    <button class="rating-button practice-button" onclick="selectOption(this, 'Arousal: Střední')">Střední</button>
-                    <button class="rating-button practice-button" onclick="selectOption(this, 'Arousal: Nízký')">Nízký</button>
-                </div>
-                <div class="control-group">
-                    <h3>Valence (emoční hodnocení)</h3>
-                    <button class="rating-button practice-button" onclick="selectOption(this, 'Valence: Pozitivní')">Pozitivní</button>
-                    <button class="rating-button practice-button" onclick="selectOption(this, 'Valence: Neutrální')">Neutrální</button>
-                    <button class="rating-button practice-button" onclick="selectOption(this, 'Valence: Negativní')">Negativní</button>
-                </div>
-                <button id="confirmPracticeButton2" class="confirmation-button" onclick="confirmPracticeRating()">Potvrzuji hodnocení</button>
             </div>
         </section>
 
@@ -124,9 +66,8 @@
                 <label for="education">Vzdělání:</label>
                 <select id="education" name="education" required>
                     <option value="">Vyberte...</option>
-                    <option value="Základní">Základní</option>
-                    <option value="SŠ">Střední</option>
-                    <option value="VŠ">Vysokoškolské</option>
+                    <option value="SŠ">Střední škola</option>
+                    <option value="VŠ">Vysoká škola</option>
                 </select><br /><br />
 
                 <label for="occupation">Povolání:</label>
@@ -135,7 +76,8 @@
                 <label for="nativeLanguage">Mateřský jazyk:</label>
                 <input type="text" id="nativeLanguage" name="nativeLanguage" placeholder="Zadejte svůj mateřský jazyk" required /><br /><br />
 
-                <button type="submit" id="submitDemographicButton">Odeslat a začít hodnocení</button>
+                <button type="submit" id="submitDemographicButton" class="submit-button">Odeslat údaje</button>
+                <button type="button" id="startButton" style="display:none;">Začít hodnocení</button>
             </form>
         </section>
     </main>

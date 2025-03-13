@@ -235,12 +235,6 @@ function setupConfirmButton() {
     }
 }
 
-// Fetch and display adjectives when the page loads
-window.onload = () => {
-    fetchAdjectives();
-    setupEventListeners();
-};
-
 // Přidání event listenerů po načtení dokumentu
 document.addEventListener('DOMContentLoaded', function() {
     setupConfirmButton();
@@ -250,6 +244,9 @@ document.addEventListener('DOMContentLoaded', function() {
     ratingButtons.forEach(button => {
         button.addEventListener('click', () => selectOption(button));
     });
+
+    // Přidání event listeneru pro tlačítko odeslání demografických dat
+    document.getElementById("submitDemographicButton").addEventListener("click", saveUserData);
 });
 
 // Zavření modal okna
@@ -282,15 +279,40 @@ document.addEventListener("DOMContentLoaded", () => {
     if (confirmPracticeButton2) {
         confirmPracticeButton2.addEventListener("click", confirmPracticeRating);
     }
-
-    // ...existing code...
 });
 
-document.getElementById("submitDemographicButton").addEventListener("click", saveUserData);
-document.getElementById("startButton").addEventListener("click", fetchAdjectives);
-document.querySelectorAll(".rating-button").forEach(button => {
-    button.addEventListener("click", () => rateWord(button.dataset.valence, button.dataset.arousal));
-});
+// Přidání JavaScript kódu pro zvýraznění vybraných tlačítek a zobrazení potvrzovací zprávy
+function selectOption(button, value) {
+    // Zrušení zvýraznění všech tlačítek ve stejné skupině
+    const buttons = button.parentElement.querySelectorAll('.rating-button');
+    buttons.forEach(btn => btn.classList.remove('selected'));
+
+    // Zvýraznění vybraného tlačítka
+    button.classList.add('selected');
+
+    // Uložení hodnoty do datasetu tlačítka
+    button.parentElement.dataset.selectedValue = value;
+}
+
+function confirmPracticeRating() {
+    const practiceContainers = document.querySelectorAll('.practiceWordContainer');
+    let allRated = true;
+
+    practiceContainers.forEach(container => {
+        const arousalGroup = container.querySelector('.control-group:nth-child(2)');
+        const valenceGroup = container.querySelector('.control-group:nth-child(3)');
+
+        if (!arousalGroup.dataset.selectedValue || !valenceGroup.dataset.selectedValue) {
+            allRated = false;
+        }
+    });
+
+    if (allRated) {
+        alert('Hodnocení bylo úspěšně potvrzeno.');
+    } else {
+        alert('Prosím, ohodnoťte všechna slova před potvrzením.');
+    }
+}
 
 // Volání synchronizace při načtení stránky
 window.addEventListener('load', syncRatingsWithFirestore);
