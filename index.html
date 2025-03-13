@@ -39,13 +39,41 @@
             
             <div class="practiceWordContainer">
                 <div class="highlight-word">
+                    <span class="test-word">Šťastný</span>
                 </div>
                 <div class="control-group">
+                    <h3>Valence</h3>
+                    <button class="rating-button" onclick="selectOption(this, 'pozitivní')">Pozitivní</button>
+                    <button class="rating-button" onclick="selectOption(this, 'neutrální')">Neutrální</button>
+                    <button class="rating-button" onclick="selectOption(this, 'negativní')">Negativní</button>
+                </div>
+                <div class="control-group">
+                    <h3>Arousal</h3>
+                    <button class="rating-button" onclick="selectOption(this, 'vysoký')">Vysoký</button>
+                    <button class="rating-button" onclick="selectOption(this, 'střední')">Střední</button>
+                    <button class="rating-button" onclick="selectOption(this, 'nízký')">Nízký</button>
                 </div>
             </div>
 
             <div class="practiceWordContainer">
+                <div class="highlight-word">
+                    <span class="test-word">Smutný</span>
+                </div>
+                <div class="control-group">
+                    <h3>Valence</h3>
+                    <button class="rating-button" onclick="selectOption(this, 'pozitivní')">Pozitivní</button>
+                    <button class="rating-button" onclick="selectOption(this, 'neutrální')">Neutrální</button>
+                    <button class="rating-button" onclick="selectOption(this, 'negativní')">Negativní</button>
+                </div>
+                <div class="control-group">
+                    <h3>Arousal</h3>
+                    <button class="rating-button" onclick="selectOption(this, 'vysoký')">Vysoký</button>
+                    <button class="rating-button" onclick="selectOption(this, 'střední')">Střední</button>
+                    <button class="rating-button" onclick="selectOption(this, 'nízký')">Nízký</button>
+                </div>
             </div>
+
+            <button id="confirmPracticeButton" class="confirmation-button" onclick="confirmPracticeRating()">Potvrdit hodnocení</button>
         </section>
 
         <section id="demographicSurvey">

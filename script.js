@@ -196,24 +196,31 @@ function setupEventListeners() {
     arousalButtons.forEach(button => {
         button.addEventListener("click", () => {
             currentArousal = button.innerText.toLowerCase();
-            rateWord(currentValence, currentArousal);
+            highlightButton(button);
         });
         button.addEventListener("touchstart", () => {
             currentArousal = button.innerText.toLowerCase();
-            rateWord(currentValence, currentArousal);
+            highlightButton(button);
         });
     });
 
     valenceButtons.forEach(button => {
         button.addEventListener("click", () => {
             currentValence = button.innerText.toLowerCase();
-            rateWord(currentValence, currentArousal);
+            highlightButton(button);
         });
         button.addEventListener("touchstart", () => {
             currentValence = button.innerText.toLowerCase();
-            rateWord(currentValence, currentArousal);
+            highlightButton(button);
         });
     });
+}
+
+// Zvýraznění vybraného tlačítka
+function highlightButton(button) {
+    const buttons = button.parentElement.querySelectorAll('.rating-button');
+    buttons.forEach(btn => btn.classList.remove('selected'));
+    button.classList.add('selected');
 }
 
 // Funkce setupConfirmButton
@@ -222,12 +229,9 @@ function setupConfirmButton() {
     if (confirmButton) {
         confirmButton.addEventListener('click', () => {
             if (currentValence && currentArousal) {
+                rateWord(currentValence, currentArousal);
                 showFeedbackMessage("Děkujeme za vaše hodnocení!");
-                currentAdjective++;
-                updateProgress();
-                if (currentAdjective >= totalAdjectives) {
-                    finishRating();
-                }
+                clearSelections();
             } else {
                 displayErrorMessage("Prosím, vyberte hodnocení pro valenci a arousal před potvrzením.");
             }
@@ -235,9 +239,26 @@ function setupConfirmButton() {
     }
 }
 
+// Vymazání zvýraznění po potvrzení
+function clearSelections() {
+    const selectedButtons = document.querySelectorAll('.rating-button.selected');
+    selectedButtons.forEach(button => button.classList.remove('selected'));
+}
+
+// Zobrazení zpětné vazby
+function showFeedbackMessage(message) {
+    alert(message);
+}
+
+// Zobrazení chybové zprávy
+function displayErrorMessage(message) {
+    alert(message);
+}
+
 // Přidání event listenerů po načtení dokumentu
 document.addEventListener('DOMContentLoaded', function() {
     setupConfirmButton();
+    setupEventListeners();
     
     // Přidáme event listenery pro všechna rating tlačítka
     const ratingButtons = document.querySelectorAll('.rating-button');
