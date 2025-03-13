@@ -22,8 +22,6 @@
             <div class="info-icon-container">
                 <span class="info-icon gray-icon">ℹ️</span>
                 <div class="tooltip">
-                    <p><strong>Arousal:</strong> Měří intenzitu emocí (Vysoká, Střední, Nízká).</p>
-                    <p><strong>Valence:</strong> Určuje, zda je pocit pozitivní, neutrální nebo negativní.</p>
                 </div>
             </div>
         </section>
@@ -85,6 +83,8 @@
                 <button id="confirmPracticeButton1" class="confirmation-button" onclick="confirmPracticeRating()">Potvrzuji hodnocení</button>
             </div>
 
+            <div style="margin-bottom: 2rem;"></div>
+
             <div class="practiceWordContainer">
                 <div class="highlight-word">
                     <h3><span class="test-word">SMUTNÝ</span></h3>
@@ -109,7 +109,7 @@
         <section id="demographicSurvey">
             <h3>Demografický dotazník</h3>
             <p>Vaše demografické údaje nám pomohou lépe pochopit výsledky hodnocení a výsledky výzkumu. Veškeré údaje jsou anonymní a budou použity výhradně pro vědecké účely v souladu s nařízením (EU) 2016/679 (Obecné nařízení o ochraně osobních údajů – GDPR) a českým zákonem č. 110/2019 Sb., o zpracování osobních údajů. Poskytnutí odpovědí je dobrovolné a anonymizované tak, aby nebylo možné vás na základě údajů identifikovat. Údaje nebudou předány třetím stranám ani použity pro komerční účely.</p>
-            <form id="demographicForm" onsubmit="event.preventDefault(); validateForm();">
+            <form id="demographicForm" onsubmit="event.preventDefault(); saveUserData();">
                 <label for="age">Věk:</label>
                 <input type="number" id="age" name="age" min="18" placeholder="Zadejte svůj věk (číslem)" required /><br /><br />
 
@@ -124,8 +124,9 @@
                 <label for="education">Vzdělání:</label>
                 <select id="education" name="education" required>
                     <option value="">Vyberte...</option>
-                    <option value="SŠ">Střední škola</option>
-                    <option value="VŠ">Vysoká škola</option>
+                    <option value="Základní">Základní</option>
+                    <option value="SŠ">Střední</option>
+                    <option value="VŠ">Vysokoškolské</option>
                 </select><br /><br />
 
                 <label for="occupation">Povolání:</label>
@@ -134,8 +135,7 @@
                 <label for="nativeLanguage">Mateřský jazyk:</label>
                 <input type="text" id="nativeLanguage" name="nativeLanguage" placeholder="Zadejte svůj mateřský jazyk" required /><br /><br />
 
-                <button type="submit" id="submitDemographicButton" class="submit-button">Odeslat údaje</button>
-                <button type="button" id="startButton" style="display:none;">Začít hodnocení</button>
+                <button type="submit" id="submitDemographicButton">Odeslat a začít hodnocení</button>
             </form>
         </section>
     </main>

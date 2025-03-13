@@ -5,7 +5,7 @@ document.getElementById('startButton').addEventListener('click', function() {
 
 // Import Firebase modules from CDN
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, getDocs, updateDoc, increment, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, updateDoc, increment, doc, setDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -29,8 +29,8 @@ let currentValence = null;
 let currentArousal = null;
 let userId = null;
 
-// Uložení uživatelských dat
-function saveUserData() {
+// Uložení uživatelských dat do Firestore
+async function saveUserData() {
     const age = document.getElementById('age').value;
     const gender = document.getElementById('gender').value;
     const education = document.getElementById('education').value;
@@ -38,21 +38,21 @@ function saveUserData() {
     const nativeLanguage = document.getElementById('nativeLanguage').value;
 
     if (age && gender && education && occupation && nativeLanguage) {
-        const userRef = doc(collection(db, "users"));
-        setDoc(userRef, {
-            age: age,
-            gender: gender,
-            education: education,
-            occupation: occupation,
-            nativeLanguage: nativeLanguage,
-            timestamp: new Date().toISOString()
-        }).then(() => {
-            userId = userRef.id;
-            document.getElementById("startButton").style.display = "block";
-            console.log("Uživatel uložen s ID:", userId);
-        }).catch(error => {
-            console.error("Chyba při ukládání uživatele: ", error);
-        });
+        try {
+            const userRef = await addDoc(collection(db, "users"), {
+                age,
+                gender,
+                education,
+                occupation,
+                nativeLanguage,
+                timestamp: new Date().toISOString()
+            });
+            userId = userRef.id; // Uložení userId pro další použití
+            localStorage.setItem('userId', userId); // Uložení userId do LocalStorage
+            window.location.href = 'adjectiverating.html'; // Přesměrování na stránku hodnocení
+        } catch (error) {
+            console.error("Chyba při ukládání uživatelských dat: ", error);
+        }
     } else {
         alert("Vyplňte všechna pole.");
     }
@@ -121,34 +121,60 @@ function displayWord() {
     }
 }
 
-// Hodnocení slov a uložení do Firestore
-async function rateWord(valence, arousal) {
+// Hodnocení slov a uložení do LocalStorage
+function rateWord(valence, arousal) {
     if (!userId) {
         alert("Nejprve vyplňte demografický dotazník.");
         return;
     }
 
     const word = words[currentWordIndex];
+    saveRatingToLocalStorage(word.id, word.word, valence, arousal);
 
-    // Uložíme hodnocení do kolekce "ratings"
-    const ratingRef = doc(collection(db, "ratings"));
-    await setDoc(ratingRef, {
-        userId: userId,
-        wordId: word.id,
-        word: word.word,
-        valence: valence,
-        arousal: arousal,
-        timestamp: new Date().toISOString()
-    });
-
-    // Aktualizujeme počet hodnocení v kolekci "adjectives"
-    const wordRef = doc(db, "adjectives", word.id);
-    await updateDoc(wordRef, {
-        evaluations: increment(1)
-    });
-
-    console.log(`Uloženo: ${word.word} - Valence: ${valence}, Arousal: ${arousal}`);
+    console.log(`Uloženo do LocalStorage: ${word.word} - Valence: ${valence}, Arousal: ${arousal}`);
     nextWord();
+}
+
+// Uložení hodnocení do LocalStorage
+function saveRatingToLocalStorage(wordId, word, valence, arousal) {
+    const ratings = JSON.parse(localStorage.getItem('ratings')) || [];
+    ratings.push({ wordId, word, valence, arousal, timestamp: new Date().toISOString() });
+    localStorage.setItem('ratings', JSON.stringify(ratings));
+}
+
+// Sledování počtu zápisů v Google Analytics
+function trackWriteOperation() {
+    if (typeof gtag === 'function') {
+        gtag('event', 'write_operation', {
+            'event_category': 'Firestore',
+            'event_label': 'Write Operation',
+            'value': 1
+        });
+    }
+}
+
+// Synchronizace hodnocení s Firestore
+async function syncRatingsWithFirestore() {
+    const ratings = JSON.parse(localStorage.getItem('ratings')) || [];
+    if (ratings.length === 0) return;
+
+    const batch = db.batch();
+    ratings.forEach(rating => {
+        const ratingRef = doc(collection(db, "ratings"));
+        batch.set(ratingRef, rating);
+
+        const wordRef = doc(db, "adjectives", rating.wordId);
+        batch.update(wordRef, { evaluations: increment(1) });
+    });
+
+    try {
+        await batch.commit();
+        localStorage.removeItem('ratings');
+        console.log('Hodnocení byla úspěšně synchronizována s Firestore.');
+        trackWriteOperation();
+    } catch (error) {
+        console.error('Chyba při synchronizaci hodnocení s Firestore: ', error);
+    }
 }
 
 // Další slovo
@@ -265,3 +291,6 @@ document.getElementById("startButton").addEventListener("click", fetchAdjectives
 document.querySelectorAll(".rating-button").forEach(button => {
     button.addEventListener("click", () => rateWord(button.dataset.valence, button.dataset.arousal));
 });
+
+// Volání synchronizace při načtení stránky
+window.addEventListener('load', syncRatingsWithFirestore);
