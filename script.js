@@ -329,10 +329,22 @@ function confirmPracticeRating() {
     });
 
     if (allRated) {
-        alert('Hodnocení bylo úspěšně potvrzeno.');
+        showVisualFeedback('Hodnocení testovacích slov "Šťastný" a "Smutný" bylo úspěšně potvrzeno. Nyní můžete pokračovat k dotazníku.');
     } else {
-        alert('Prosím, ohodnoťte všechna slova před potvrzením.');
+        showVisualFeedback('Prosím, ohodnoťte obě testovací slova "Šťastný" a "Smutný" před potvrzením.');
     }
+}
+
+// Funkce pro zobrazení vizuální zpětné vazby
+function showVisualFeedback(message) {
+    const feedbackElement = document.createElement('div');
+    feedbackElement.className = 'feedback-message';
+    feedbackElement.innerText = message;
+    document.body.appendChild(feedbackElement);
+
+    setTimeout(() => {
+        feedbackElement.remove();
+    }, 3000);
 }
 
 // Volání synchronizace při načtení stránky
