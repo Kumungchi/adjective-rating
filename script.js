@@ -347,5 +347,9 @@ function showVisualFeedback(message) {
     }, 3000);
 }
 
+// Explicitně nastavení funkcí do window
+window.selectOption = selectOption;
+window.confirmPracticeRating = confirmPracticeRating;
+
 // Volání synchronizace při načtení stránky
 window.addEventListener('load', syncRatingsWithFirestore);
