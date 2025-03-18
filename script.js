@@ -5,7 +5,7 @@ document.getElementById('startButton').addEventListener('click', function() {
 
 // Import Firebase modules from CDN
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, getDocs, updateDoc, increment, doc, setDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, updateDoc, increment, doc, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -27,19 +27,15 @@ const totalAdjectives = 15;
 let words = [];
 let currentValence = null;
 let currentArousal = null;
-let userId = null;
+let userId = localStorage.getItem("userId"); // Získání uživatelského ID z LocalStorage
 
 // Uložení uživatelských dat do Firestore
 async function saveUserData() {
-    console.log("Funkce saveUserData byla spuštěna!"); // Debugging krok 1
-
     const age = document.getElementById('age').value;
     const gender = document.getElementById('gender').value;
     const education = document.getElementById('education').value;
     const occupation = document.getElementById('occupation').value;
     const nativeLanguage = document.getElementById('nativeLanguage').value;
-
-    console.log("Získané hodnoty:", { age, gender, education, occupation, nativeLanguage }); // Debugging krok 2
 
     if (age && gender && education && occupation && nativeLanguage) {
         try {
@@ -51,7 +47,6 @@ async function saveUserData() {
                 nativeLanguage,
                 timestamp: new Date().toISOString()
             });
-            console.log("Úspěšně uloženo do Firestore! ID uživatele:", userRef.id);
             userId = userRef.id; // Uložení userId pro další použití
             localStorage.setItem('userId', userId); // Uložení userId do LocalStorage
             window.location.href = 'adjectiverating.html'; // Přesměrování na stránku hodnocení
@@ -67,42 +62,12 @@ async function saveUserData() {
 async function fetchAdjectives() {
     try {
         const querySnapshot = await getDocs(collection(db, "adjectives"));
-        let allWords = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
-        // Skupinování podle počtu hodnocení
-        const groupedWords = groupByEvaluations(allWords);
-        words = sortAndShuffleGroups(groupedWords);
-
+        words = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        shuffleArray(words); // Zamíchání slov
         displayWord();
     } catch (error) {
-        console.error("Chyba při načítání slov: ", error);
+        console.error("Chyba při načítání slov:", error);
     }
-}
-
-// Skupinování slov podle počtu hodnocení
-function groupByEvaluations(words) {
-    return words.reduce((groups, word) => {
-        const count = word.evaluations || 0;
-        if (!groups[count]) {
-            groups[count] = [];
-        }
-        groups[count].push(word);
-        return groups;
-    }, {});
-}
-
-// Řazení skupin podle nejméně hodnocených a náhodné míchání uvnitř
-function sortAndShuffleGroups(groups) {
-    const sortedKeys = Object.keys(groups).sort((a, b) => a - b);
-    let sortedAndShuffledWords = [];
-
-    sortedKeys.forEach(key => {
-        const group = groups[key];
-        shuffleArray(group);
-        sortedAndShuffledWords = sortedAndShuffledWords.concat(group);
-    });
-
-    return sortedAndShuffledWords;
 }
 
 // Fisher-Yates míchání pole
@@ -123,6 +88,7 @@ function displayWord() {
         document.getElementById("progress-text").innerText = `${currentWordIndex + 1}/${totalAdjectives}`;
     } else {
         document.getElementById("adjectiveDisplay").innerHTML = `<h2>Děkujeme za hodnocení!</h2>`;
+        syncRatingsWithFirestore();
     }
 }
 
@@ -133,10 +99,26 @@ function rateWord(valence, arousal) {
         return;
     }
 
-    const word = words[currentWordIndex];
-    saveRatingToLocalStorage(word.id, word.word, valence, arousal);
+    if (!valence || !arousal) {
+        alert("Musíte vybrat jak valenci, tak arousal.");
+        return;
+    }
 
-    console.log(`Uloženo do LocalStorage: ${word.word} - Valence: ${valence}, Arousal: ${arousal}`);
+    const word = words[currentWordIndex];
+    const ratings = JSON.parse(localStorage.getItem("ratings")) || [];
+    ratings.push({ 
+        userId,
+        wordId: word.id,
+        word: word.word,
+        valence, 
+        arousal, 
+        timestamp: new Date().toISOString() 
+    });
+
+    localStorage.setItem("ratings", JSON.stringify(ratings));
+
+    console.log(`Uloženo: ${word.word} - Valence: ${valence}, Arousal: ${arousal}`);
+
     nextWord();
 }
 
@@ -163,22 +145,19 @@ async function syncRatingsWithFirestore() {
     const ratings = JSON.parse(localStorage.getItem('ratings')) || [];
     if (ratings.length === 0) return;
 
-    const batch = db.batch();
-    ratings.forEach(rating => {
-        const ratingRef = doc(collection(db, "ratings"));
-        batch.set(ratingRef, rating);
-
-        const wordRef = doc(db, "adjectives", rating.wordId);
-        batch.update(wordRef, { evaluations: increment(1) });
-    });
-
     try {
-        await batch.commit();
-        localStorage.removeItem('ratings');
-        console.log('Hodnocení byla úspěšně synchronizována s Firestore.');
-        trackWriteOperation();
+        for (let rating of ratings) {
+            await addDoc(collection(db, "ratings"), rating);
+
+            // Aktualizace počtu hodnocení v kolekci adjectives
+            const wordRef = doc(db, "adjectives", rating.wordId);
+            await updateDoc(wordRef, { evaluations: increment(1) });
+        }
+
+        localStorage.removeItem("ratings"); // Vyčištění po synchronizaci
+        console.log("Hodnocení byla úspěšně synchronizována s Firestore.");
     } catch (error) {
-        console.error('Chyba při synchronizaci hodnocení s Firestore: ', error);
+        console.error("Chyba při synchronizaci hodnocení:", error);
     }
 }
 
