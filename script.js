@@ -31,11 +31,15 @@ let userId = null;
 
 // Uložení uživatelských dat do Firestore
 async function saveUserData() {
+    console.log("Funkce saveUserData byla spuštěna!"); // Debugging krok 1
+
     const age = document.getElementById('age').value;
     const gender = document.getElementById('gender').value;
     const education = document.getElementById('education').value;
     const occupation = document.getElementById('occupation').value;
     const nativeLanguage = document.getElementById('nativeLanguage').value;
+
+    console.log("Získané hodnoty:", { age, gender, education, occupation, nativeLanguage }); // Debugging krok 2
 
     if (age && gender && education && occupation && nativeLanguage) {
         try {
@@ -47,11 +51,12 @@ async function saveUserData() {
                 nativeLanguage,
                 timestamp: new Date().toISOString()
             });
+            console.log("Úspěšně uloženo do Firestore! ID uživatele:", userRef.id);
             userId = userRef.id; // Uložení userId pro další použití
             localStorage.setItem('userId', userId); // Uložení userId do LocalStorage
             window.location.href = 'adjectiverating.html'; // Přesměrování na stránku hodnocení
         } catch (error) {
-            console.error("Chyba při ukládání uživatelských dat: ", error);
+            console.error("Chyba při ukládání do Firestore:", error);
         }
     } else {
         alert("Vyplňte všechna pole.");
