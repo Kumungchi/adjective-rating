@@ -262,6 +262,7 @@ footer {
     display: inline-block;
 }
 
+/* Styl pro tooltip */
 .tooltip {
     visibility: hidden;
     width: 200px;
