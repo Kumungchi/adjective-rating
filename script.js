@@ -87,7 +87,7 @@ function displayWord() {
         document.getElementById("adjectiveDisplay").innerHTML = `<h2>${words[currentWordIndex].word}</h2>`;
         document.getElementById("progress-text").innerText = `${currentWordIndex + 1}/${totalAdjectives}`;
     } else {
-        document.getElementById("adjectiveDisplay").innerHTML = `<h2>Děkujeme za hodnocení!</h2>`;
+        document.getElementById("adjectiveDisplay").innerHTML = `<h2>Děkujeme za hodnocení!</h2><p>Kontakt: Matias.Bunnik.s01@osu.cz</p>`;
         syncRatingsWithFirestore();
     }
 }
@@ -167,7 +167,7 @@ function nextWord() {
     if (currentWordIndex < totalAdjectives) {
         displayWord();
     } else {
-        document.getElementById("adjectiveDisplay").innerHTML = `<h2>Děkujeme za účast!</h2>`;
+        document.getElementById("adjectiveDisplay").innerHTML = `<h2>Děkujeme za účast!</h2><p>V případě dotazů mě kontaktujte na Matias.Bunnik.s01@osu.cz</p>`;
         document.getElementById("modal").style.display = 'block';
     }
 }
