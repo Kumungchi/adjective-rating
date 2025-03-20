@@ -1,6 +1,10 @@
-// Introduction website
-document.getElementById('startButton').addEventListener('click', function() {
-    window.location.href = 'adjectiverating.html';
+document.addEventListener("DOMContentLoaded", function() {
+    const startButton = document.getElementById('startButton');
+    if (startButton) {
+        startButton.addEventListener('click', function() {
+            window.location.href = 'adjectiverating.html';
+        });
+    }
 });
 
 // Import Firebase modules from CDN
@@ -168,7 +172,7 @@ function nextWord() {
         displayWord();
     } else {
         document.getElementById("adjectiveDisplay").innerHTML = `<h2>Děkujeme za účast!</h2><p>V případě dotazů mě kontaktujte na Matias.Bunnik.s01@osu.cz</p>`;
-        document.getElementById("modal").style.display = 'block';
+        submitRatingsToFirestore();
     }
 }
 
@@ -252,6 +256,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Přidání event listeneru pro tlačítko odeslání demografických dat
     document.getElementById("submitDemographicButton").addEventListener("click", saveUserData);
+
+    // Načtení slov z Firestore
+    fetchAdjectives();
 });
 
 // Zavření modal okna
@@ -287,17 +294,17 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Přidání JavaScript kódu pro zvýraznění vybraných tlačítek a zobrazení potvrzovací zprávy
-function selectOption(button, value) {
-    // Zrušení zvýraznění všech tlačítek ve stejné skupině
+function selectOption(button) {
+    // Resetuje výběr ve skupině tlačítek
     const buttons = button.parentElement.querySelectorAll('.rating-button');
     buttons.forEach(btn => btn.classList.remove('selected'));
 
-    // Zvýraznění vybraného tlačítka
+    // Zvýrazní vybranou možnost
     button.classList.add('selected');
-
-    // Uložení hodnoty do datasetu tlačítka
-    button.parentElement.dataset.selectedValue = value;
 }
+
+// Ujistíme se, že funkce je dostupná v `window`
+window.selectOption = selectOption;
 
 function confirmPracticeRating() {
     const practiceContainers = document.querySelectorAll('.practiceWordContainer');
@@ -337,3 +344,22 @@ window.confirmPracticeRating = confirmPracticeRating;
 
 // Volání synchronizace při načtení stránky
 window.addEventListener('load', syncRatingsWithFirestore);
+
+async function submitRatingsToFirestore() {
+    const ratings = JSON.parse(localStorage.getItem('ratings')) || [];
+    if (ratings.length === 0) return;
+
+    console.log("Odesílání hodnocení do Firestore:", ratings);
+
+    for (const rating of ratings) {
+        try {
+            await addDoc(collection(db, "ratings"), rating);
+        } catch (error) {
+            console.error("Chyba při odesílání hodnocení:", error);
+        }
+    }
+
+    // Vymažeme localStorage po odeslání
+    localStorage.removeItem('ratings');
+    alert("Hodnocení úspěšně odesláno!");
+}
