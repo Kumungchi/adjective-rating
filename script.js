@@ -1,10 +1,28 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const startButton = document.getElementById('startButton');
-    if (startButton) {
-        startButton.addEventListener('click', function() {
-            window.location.href = 'adjectiverating.html';
-        });
+    const adjectiveDisplay = document.getElementById('adjectiveDisplay');
+    if (!adjectiveDisplay) {
+        console.error("❌ Element 'adjectiveDisplay' nebyl nalezen v DOMu!");
+        return;
     }
+    console.log("✅ Element 'adjectiveDisplay' nalezen:", adjectiveDisplay);
+
+    setupConfirmButton();
+    setupEventListeners();
+    
+    // Přidáme event listenery pro všechna rating tlačítka
+    const ratingButtons = document.querySelectorAll('.rating-button');
+    ratingButtons.forEach(button => {
+        button.addEventListener('click', () => selectOption(button));
+    });
+
+    // Přidání event listeneru pro tlačítko odeslání demografických dat
+    const submitDemographicButton = document.getElementById("submitDemographicButton");
+    if (submitDemographicButton) {
+        submitDemographicButton.addEventListener("click", saveUserData);
+    }
+
+    // Načtení slov z Firestore
+    fetchAdjectives();
 });
 
 // Import Firebase modules from CDN
@@ -242,24 +260,6 @@ function showFeedbackMessage(message) {
 function displayErrorMessage(message) {
     alert(message);
 }
-
-// Přidání event listenerů po načtení dokumentu
-document.addEventListener('DOMContentLoaded', function() {
-    setupConfirmButton();
-    setupEventListeners();
-    
-    // Přidáme event listenery pro všechna rating tlačítka
-    const ratingButtons = document.querySelectorAll('.rating-button');
-    ratingButtons.forEach(button => {
-        button.addEventListener('click', () => selectOption(button));
-    });
-
-    // Přidání event listeneru pro tlačítko odeslání demografických dat
-    document.getElementById("submitDemographicButton").addEventListener("click", saveUserData);
-
-    // Načtení slov z Firestore
-    fetchAdjectives();
-});
 
 // Zavření modal okna
 document.addEventListener('DOMContentLoaded', function() {
