@@ -82,13 +82,24 @@ async function saveUserData() {
 
 // Načtení slov z Firestore
 async function fetchAdjectives() {
+    console.log("✅ Načítám slova z Firestore...");
     try {
         const querySnapshot = await getDocs(collection(db, "adjectives"));
+        console.log("🔍 Získaná data:", querySnapshot.docs.map(doc => doc.data())); // Debugging
+
         words = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        
+        if (words.length === 0) {
+            console.warn("⚠️ Nebyla načtena žádná slova!");
+            document.getElementById("adjectiveDisplay").innerHTML = "<h2>Chyba: Nebyla nalezena žádná slova.</h2>";
+            return;
+        }
+
         shuffleArray(words); // Zamíchání slov
         displayWord();
     } catch (error) {
-        console.error("Chyba při načítání slov:", error);
+        console.error("❌ Chyba při načítání slov:", error);
+        document.getElementById("adjectiveDisplay").innerHTML = "<h2>Chyba při načítání slov!</h2>";
     }
 }
 
@@ -102,13 +113,20 @@ function shuffleArray(array) {
 
 // Zobrazení aktuálního slova
 function displayWord() {
-    currentValence = null;
-    currentArousal = null;
+    if (words.length === 0) {
+        console.error("❌ Žádná slova nejsou načtena!");
+        document.getElementById("adjectiveDisplay").innerHTML = "<h2>Žádná dostupná slova!</h2>";
+        return;
+    }
 
     if (currentWordIndex < totalAdjectives) {
-        document.getElementById("adjectiveDisplay").innerHTML = `<h2>${words[currentWordIndex].word}</h2>`;
+        const wordObj = words[currentWordIndex];
+        console.log(`📝 Zobrazuji slovo: ${wordObj.word}`);
+
+        document.getElementById("adjectiveDisplay").innerHTML = `<h2>${wordObj.word}</h2>`;
         document.getElementById("progress-text").innerText = `${currentWordIndex + 1}/${totalAdjectives}`;
     } else {
+        console.log("✅ Všechna slova byla ohodnocena.");
         document.getElementById("adjectiveDisplay").innerHTML = `<h2>Děkujeme za hodnocení!</h2><p>Kontakt: Matias.Bunnik.s01@osu.cz</p>`;
         syncRatingsWithFirestore();
     }
