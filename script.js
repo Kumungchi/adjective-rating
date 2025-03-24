@@ -23,6 +23,23 @@ document.addEventListener("DOMContentLoaded", function() {
         submitDemographicButton.addEventListener("click", saveUserData);
     }
 
+    // Zavření modal okna
+    const closeButton = document.getElementById('closeButton');
+    const modal = document.getElementById('modal');
+
+    if (closeButton && modal) {
+        closeButton.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+
+        // Zavření modal při kliknutí mimo něj
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    }
+
     // Načtení slov z Firestore
     fetchAdjectives();
 });
@@ -46,17 +63,18 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-let currentWordIndex = 0;
-const totalAdjectives = 15;
-let words = [];
-let currentValence = null;
-let currentArousal = null;
 let userId = localStorage.getItem("userId"); // Získání uživatelského ID z LocalStorage
 
 if (!userId) {
     alert("Nebyl nalezen identifikátor účastníka. Pravděpodobně jste přeskočili dotazník.");
     window.location.href = "index.html";
 }
+
+let currentWordIndex = 0;
+const totalAdjectives = 15;
+let words = [];
+let currentValence = null;
+let currentArousal = null;
 
 // Uložení uživatelských dat do Firestore
 async function saveUserData() {
@@ -270,25 +288,6 @@ function displayErrorMessage(message) {
     alert(message);
 }
 
-// Zavření modal okna
-document.addEventListener('DOMContentLoaded', function() {
-    const closeButton = document.getElementById('closeButton');
-    const modal = document.getElementById('modal');
-
-    if (closeButton && modal) {
-        closeButton.addEventListener('click', function() {
-            modal.style.display = 'none';
-        });
-
-        // Zavření modal při kliknutí mimo něj
-        window.addEventListener('click', function(event) {
-            if (event.target === modal) {
-                modal.style.display = 'none';
-            }
-        });
-    }
-});
-
 document.addEventListener("DOMContentLoaded", () => {
     const confirmPracticeButton1 = document.getElementById("confirmPracticeButton1");
     const confirmPracticeButton2 = document.getElementById("confirmPracticeButton2");
@@ -371,5 +370,10 @@ async function submitRatingsToFirestore() {
 
     // Vymažeme localStorage po odeslání
     localStorage.removeItem('ratings');
-    alert("Hodnocení úspěšně odesláno!");
+
+    // Zobrazení modálního okna
+    const modal = document.getElementById('modal');
+    if (modal) {
+        modal.style.display = 'block';
+    }
 }
