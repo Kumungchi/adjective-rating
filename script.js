@@ -1,47 +1,50 @@
 document.addEventListener("DOMContentLoaded", function() {
     console.log("✅ DOM plně načten!");
 
-    const adjectiveDisplay = document.getElementById('adjectiveDisplay');
-    if (!adjectiveDisplay) {
-        console.error("❌ Element 'adjectiveDisplay' nebyl nalezen v DOMu!");
-        return;
-    }
-    console.log("✅ Element 'adjectiveDisplay' nalezen:", adjectiveDisplay);
+    if (window.location.pathname.includes("adjectiverating.html")) {
+        const adjectiveDisplay = document.getElementById('adjectiveDisplay');
+        if (!adjectiveDisplay) {
+            console.error("❌ Element 'adjectiveDisplay' nebyl nalezen v DOMu!");
+            return;
+        }
+        console.log("✅ Element 'adjectiveDisplay' nalezen:", adjectiveDisplay);
 
-    setupConfirmButton();
-    setupEventListeners();
-    
-    // Přidáme event listenery pro všechna rating tlačítka
-    const ratingButtons = document.querySelectorAll('.rating-button');
-    ratingButtons.forEach(button => {
-        button.addEventListener('click', () => selectOption(button));
-    });
-
-    // Přidání event listeneru pro tlačítko odeslání demografických dat
-    const submitDemographicButton = document.getElementById("submitDemographicButton");
-    if (submitDemographicButton) {
-        submitDemographicButton.addEventListener("click", saveUserData);
-    }
-
-    // Zavření modal okna
-    const closeButton = document.getElementById('closeButton');
-    const modal = document.getElementById('modal');
-
-    if (closeButton && modal) {
-        closeButton.addEventListener('click', function() {
-            modal.style.display = 'none';
+        setupConfirmButton();
+        setupEventListeners();
+        
+        // Přidáme event listenery pro všechna rating tlačítka
+        const ratingButtons = document.querySelectorAll('.rating-button');
+        ratingButtons.forEach(button => {
+            button.addEventListener('click', () => selectOption(button));
+            button.addEventListener('touchstart', () => selectOption(button));
         });
 
-        // Zavření modal při kliknutí mimo něj
-        window.addEventListener('click', function(event) {
-            if (event.target === modal) {
+        // Přidání event listeneru pro tlačítko odeslání demografických dat
+        const submitDemographicButton = document.getElementById("submitDemographicButton");
+        if (submitDemographicButton) {
+            submitDemographicButton.addEventListener("click", saveUserData);
+        }
+
+        // Zavření modal okna
+        const closeButton = document.getElementById('closeButton');
+        const modal = document.getElementById('modal');
+
+        if (closeButton && modal) {
+            closeButton.addEventListener('click', function() {
                 modal.style.display = 'none';
-            }
-        });
-    }
+            });
 
-    // Načtení slov z Firestore
-    fetchAdjectives();
+            // Zavření modal při kliknutí mimo něj
+            window.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+
+        // Načtení slov z Firestore
+        fetchAdjectives();
+    }
 });
 
 // Import Firebase modules from CDN
@@ -63,12 +66,14 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-let userId = localStorage.getItem("userId"); // Získání uživatelského ID z LocalStorage
+document.addEventListener("DOMContentLoaded", function() {
+    let userId = localStorage.getItem("userId"); // Získání uživatelského ID z LocalStorage
 
-if (!userId) {
-    alert("Nebyl nalezen identifikátor účastníka. Pravděpodobně jste přeskočili dotazník.");
-    window.location.href = "index.html";
-}
+    if (!userId) {
+        alert("Nebyl nalezen identifikátor účastníka. Pravděpodobně jste přeskočili dotazník.");
+        window.location.href = "index.html";
+    }
+});
 
 let currentWordIndex = 0;
 const totalAdjectives = 15;
@@ -187,8 +192,6 @@ function rateWord(valence, arousal) {
     nextWord();
 }
 
-// Uložení hodnocení do LocalStorage
-
 // Synchronizace hodnocení s Firestore
 async function syncRatingsWithFirestore() {
     const ratings = JSON.parse(localStorage.getItem('ratings')) || [];
@@ -254,6 +257,7 @@ function highlightButton(button) {
     const buttons = button.parentElement.querySelectorAll('.rating-button');
     buttons.forEach(btn => btn.classList.remove('selected'));
     button.classList.add('selected');
+    button.parentElement.dataset.selectedValue = button.dataset.value; // Nastavení dataset.selectedValue
 }
 
 // Funkce setupConfirmButton
@@ -309,6 +313,7 @@ function selectOption(button) {
 
     // Zvýrazní vybranou možnost
     button.classList.add('selected');
+    button.parentElement.dataset.selectedValue = button.dataset.value; // Nastavení dataset.selectedValue
 }
 
 // Ujistíme se, že funkce je dostupná v `window`
@@ -319,8 +324,8 @@ function confirmPracticeRating() {
     let allRated = true;
 
     practiceContainers.forEach(container => {
-        const arousalGroup = container.querySelector('.control-group:nth-child(2)');
-        const valenceGroup = container.querySelector('.control-group:nth-child(3)');
+        const arousalGroup = container.querySelector('.control-group:nth-child(2)'); // Opraveno na správný index
+        const valenceGroup = container.querySelector('.control-group:nth-child(1)'); // Opraveno na správný index
 
         if (!arousalGroup.dataset.selectedValue || !valenceGroup.dataset.selectedValue) {
             allRated = false;
@@ -328,8 +333,7 @@ function confirmPracticeRating() {
     });
 
     if (allRated) {
-window.selectOption = selectOption;
-window.confirmPracticeRating = confirmPracticeRating;
+        showVisualFeedback('Hodnocení testovacích slov "Šťastný" a "Smutný" bylo úspěšně potvrzeno. Nyní můžete pokračovat k dotazníku.');
     } else {
         showVisualFeedback('Prosím, ohodnoťte obě testovací slova "Šťastný" a "Smutný" před potvrzením.');
     }
