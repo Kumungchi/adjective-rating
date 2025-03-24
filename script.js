@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
+window.addEventListener("load", function() {
     const adjectiveDisplay = document.getElementById('adjectiveDisplay');
     if (!adjectiveDisplay) {
         console.error("❌ Element 'adjectiveDisplay' nebyl nalezen v DOMu!");
@@ -50,6 +50,11 @@ let words = [];
 let currentValence = null;
 let currentArousal = null;
 let userId = localStorage.getItem("userId"); // Získání uživatelského ID z LocalStorage
+
+if (!userId) {
+    alert("Nebyl nalezen identifikátor účastníka. Pravděpodobně jste přeskočili dotazník.");
+    window.location.href = "index.html";
+}
 
 // Uložení uživatelských dat do Firestore
 async function saveUserData() {

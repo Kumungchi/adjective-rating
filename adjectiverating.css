@@ -300,7 +300,7 @@ body#adjectiveRatingContainer {
     visibility: hidden;
     width: 260px;
     background-color: #333;
-    color: #fff;
+    color: #fff !important; /* Přidáno pro lepší čitelnost */
     text-align: left;
     border-radius: 6px;
     padding: 10px;
