@@ -1,4 +1,6 @@
-window.addEventListener("load", function() {
+document.addEventListener("DOMContentLoaded", function() {
+    console.log("✅ DOM plně načten!");
+
     const adjectiveDisplay = document.getElementById('adjectiveDisplay');
     if (!adjectiveDisplay) {
         console.error("❌ Element 'adjectiveDisplay' nebyl nalezen v DOMu!");
@@ -168,22 +170,6 @@ function rateWord(valence, arousal) {
 }
 
 // Uložení hodnocení do LocalStorage
-function saveRatingToLocalStorage(wordId, word, valence, arousal) {
-    const ratings = JSON.parse(localStorage.getItem('ratings')) || [];
-    ratings.push({ wordId, word, valence, arousal, timestamp: new Date().toISOString() });
-    localStorage.setItem('ratings', JSON.stringify(ratings));
-}
-
-// Sledování počtu zápisů v Google Analytics
-function trackWriteOperation() {
-    if (typeof gtag === 'function') {
-        gtag('event', 'write_operation', {
-            'event_category': 'Firestore',
-            'event_label': 'Write Operation',
-            'value': 1
-        });
-    }
-}
 
 // Synchronizace hodnocení s Firestore
 async function syncRatingsWithFirestore() {
@@ -343,7 +329,8 @@ function confirmPracticeRating() {
     });
 
     if (allRated) {
-        showVisualFeedback('Hodnocení testovacích slov "Šťastný" a "Smutný" bylo úspěšně potvrzeno. Nyní můžete pokračovat k dotazníku.');
+window.selectOption = selectOption;
+window.confirmPracticeRating = confirmPracticeRating;
     } else {
         showVisualFeedback('Prosím, ohodnoťte obě testovací slova "Šťastný" a "Smutný" před potvrzením.');
     }
