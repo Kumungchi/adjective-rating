@@ -1,8 +1,10 @@
 document.addEventListener("DOMContentLoaded", function() {
     console.log("✅ DOM plně načten!");
 
+    let userId = localStorage.getItem("userId");
+    console.log("userId je:", userId);
+
     if (window.location.pathname.includes("adjectiverating.html")) {
-        let userId = localStorage.getItem("userId");
         if (!userId) {
             alert("Nebyl nalezen identifikátor účastníka. Pravděpodobně jste přeskočili dotazník.");
             window.location.href = "index.html";
@@ -331,50 +333,52 @@ function confirmPracticeRating() {
     let allRated = true;
 
     practiceContainers.forEach(container => {
-        const arousalGroup = container.querySelector('.control-group:nth-child(2)');
         const valenceGroup = container.querySelector('.control-group:nth-child(1)');
+        const arousalGroup = container.querySelector('.control-group:nth-child(2)');
 
-        if (!arousalGroup || !valenceGroup) {
-            console.error("❌ Element 'control-group' nebyl nalezen v DOMu!");
-            allRated = false;
-            return;
-        }
-
-        if (!arousalGroup.dataset.selectedValue || !valenceGroup.dataset.selectedValue) {
+        if (!valenceGroup?.dataset?.selectedValue || !arousalGroup?.dataset?.selectedValue) {
             allRated = false;
         }
     });
 
     if (allRated) {
-        showVisualFeedback('Hodnocení testovacích slov "Šťastný" a "Smutný" bylo úspěšně potvrzeno. Nyní můžete pokračovat k dotazníku.', 'green');
+        showVisualFeedback('Hodnocení testovacích slov "Šťastný" a "Smutný" bylo úspěšně potvrzeno. Pokračujte k dotazníku.', "success");
+
+        // ✅ Zobrazit dotazník nebo scrollnout k němu
+        const form = document.getElementById("demographicSurvey");
+        if (form) {
+            form.scrollIntoView({ behavior: "smooth" });
+        }
     } else {
-        showVisualFeedback('Prosím, ohodnoťte obě testovací slova "Šťastný" a "Smutný" před potvrzením.', 'red');
+        showVisualFeedback('❗ Prosím, ohodnoťte obě testovací slova "Šťastný" a "Smutný" před potvrzením.', "error");
     }
 }
 
 // Funkce pro zobrazení vizuální zpětné vazby
-function showVisualFeedback(message, color) {
+function showVisualFeedback(message, type = "success") {
     const feedbackElement = document.createElement('div');
     feedbackElement.className = 'feedback-message';
     feedbackElement.innerText = message;
-    feedbackElement.style.backgroundColor = color; // Nastavení barvy pozadí
-    feedbackElement.style.color = 'white'; // Nastavení bílé barvy textu
-    feedbackElement.style.padding = '10px'; // Nastavení paddingu
-    feedbackElement.style.borderRadius = '5px'; // Nastavení zaoblených rohů
-    feedbackElement.style.position = 'fixed'; // Fixní pozice
-    feedbackElement.style.top = '10px'; // Umístění nahoře
-    feedbackElement.style.left = '50%'; // Umístění uprostřed
-    feedbackElement.style.transform = 'translateX(-50%)'; // Vycentrování
-    feedbackElement.style.zIndex = '1000'; // Z-index pro překrytí ostatních prvků
-    feedbackElement.style.maxWidth = 'none'; // Maximální šířka
-    feedbackElement.style.textAlign = 'center'; // Zarovnání textu na střed
-    feedbackElement.style.whiteSpace = 'nowrap'; // Zamezení zalomení textu
+
+    feedbackElement.style.backgroundColor = type === "success" ? "#4caf50" : "#e53935"; // zelená nebo červená
+    feedbackElement.style.color = 'white';
+    feedbackElement.style.padding = '10px 20px';
+    feedbackElement.style.borderRadius = '8px';
+    feedbackElement.style.position = 'fixed';
+    feedbackElement.style.top = '10px';
+    feedbackElement.style.left = '50%';
+    feedbackElement.style.transform = 'translateX(-50%)';
+    feedbackElement.style.zIndex = '9999';
+    feedbackElement.style.boxShadow = '0 2px 4px rgba(0,0,0,0.2)';
+    feedbackElement.style.fontSize = '1rem';
+    feedbackElement.style.maxWidth = '90vw';
+    feedbackElement.style.textAlign = 'center';
 
     document.body.appendChild(feedbackElement);
 
     setTimeout(() => {
         feedbackElement.remove();
-    }, 3000);
+    }, 3500);
 }
 
 // Explicitně nastavení funkcí do window
