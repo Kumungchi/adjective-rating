@@ -12,7 +12,7 @@ body#adjectiveRatingContainer {
     align-items: center;
     min-height: 100vh;
     overflow-x: hidden;
-    overflow-y: auto; /* Přidáno pro scrollování */
+    overflow-y: auto;
     position: relative;
 }
 
@@ -44,12 +44,12 @@ body#adjectiveRatingContainer {
 }
 
 #adjectiveRatingContainer .rating-button.selected {
-    background-color: #444444; /* Updated to a more prominent dark gray for selected state */
+    background-color: #444444;
     color: white;
 }
 
 #adjectiveRatingContainer .rating-button:hover {
-    background-color: #666666; /* Consistent darker color for hover */
+    background-color: #666666;
 }
 
 #adjectiveRatingContainer .rating-button:focus {
@@ -207,7 +207,7 @@ body#adjectiveRatingContainer {
 
 @media (max-width: 768px) {
     #adjectiveRatingContainer header h1 {
-        font-size: 1.8em;
+        font-size: 1.8rem;
     }
 
     #adjectiveRatingContainer .control-group h3 {
@@ -215,18 +215,23 @@ body#adjectiveRatingContainer {
     }
 
     #adjectiveRatingContainer .rating-button {
-        font-size: 1em;
+        font-size: 1rem;
         padding: 12px 20px;
     }
 
     #adjectiveRatingContainer #controls {
         flex-direction: column;
+        gap: 1rem;
+    }
+
+    #adjectiveRatingContainer #ratingPage {
+        padding: 1.5rem;
     }
 }
 
 @media (max-width: 480px) {
     #adjectiveRatingContainer header h1 {
-        font-size: 1.5em;
+        font-size: 1.5rem;
     }
 
     #adjectiveRatingContainer .control-group h3 {
@@ -234,9 +239,18 @@ body#adjectiveRatingContainer {
     }
 
     #adjectiveRatingContainer .rating-button {
-        font-size: 0.8em;
-        padding: 6px 12px;
+        font-size: 1rem;
+        padding: 10px 16px;
         max-width: 150px;
+    }
+
+    #adjectiveRatingContainer #controls {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    #adjectiveRatingContainer #ratingPage {
+        padding: 1rem;
     }
 
     .modal-content {
@@ -248,7 +262,7 @@ body#adjectiveRatingContainer {
 @media (max-width: 320px) {
     /* Další úpravy pro velmi malé obrazovky */
     #adjectiveRatingContainer header h1 {
-        font-size: 1.2em;
+        font-size: 1.2rem;
     }
 
     #adjectiveRatingContainer .control-group h3 {
@@ -256,8 +270,8 @@ body#adjectiveRatingContainer {
     }
 
     #adjectiveRatingContainer .rating-button {
-        font-size: 0.7em;
-        padding: 5px 10px;
+        font-size: 0.9rem;
+        padding: 8px 12px;
         max-width: 120px;
     }
 
@@ -268,6 +282,10 @@ body#adjectiveRatingContainer {
 
     #controls {
         gap: 0.5rem;
+    }
+
+    #adjectiveRatingContainer #ratingPage {
+        padding: 0.8rem;
     }
 }
 

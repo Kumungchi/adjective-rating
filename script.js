@@ -22,8 +22,24 @@ let words = [];
 let currentValence = null;
 let currentArousal = null;
 
+// Sloučený DOMContentLoaded listener
 document.addEventListener("DOMContentLoaded", function () {
     console.log("✅ DOM plně načten!");
+
+    // Inicializace formuláře pro demografické údaje
+    const demographicForm = document.getElementById("demographicForm");
+    const submitButton = document.getElementById("submitDemographicButton");
+    
+    if (demographicForm) {
+        // Přidání různých typů event listenerů pro lepší kompatibilitu
+        demographicForm.addEventListener("submit", handleFormSubmit);
+        
+        // Přidáme touch eventy pro mobilní zařízení
+        if (submitButton) {
+            submitButton.addEventListener("touchstart", handleButtonTouch);
+            submitButton.addEventListener("click", handleButtonClick);
+        }
+    }
 
     // Pouze na stránce hodnocení
     if (window.location.pathname.includes("adjectiverating.html")) {
@@ -55,20 +71,48 @@ document.addEventListener("DOMContentLoaded", function () {
     const confirmPracticeButton1 = document.getElementById("confirmPracticeButton1");
     const confirmPracticeButton2 = document.getElementById("confirmPracticeButton2");
 
-    if (confirmPracticeButton1) confirmPracticeButton1.addEventListener("click", confirmPracticeRating);
-    if (confirmPracticeButton2) confirmPracticeButton2.addEventListener("click", confirmPracticeRating);
+    if (confirmPracticeButton1) {
+        confirmPracticeButton1.addEventListener("click", confirmPracticeRating);
+        confirmPracticeButton1.addEventListener("touchstart", confirmPracticeRating);
+    }
+    
+    if (confirmPracticeButton2) {
+        confirmPracticeButton2.addEventListener("click", confirmPracticeRating);
+        confirmPracticeButton2.addEventListener("touchstart", confirmPracticeRating);
+    }
 
     syncRatingsWithFirestore();
 });
 
+// Funkce pro zpracování odeslání formuláře
+function handleFormSubmit(event) {
+    event.preventDefault();
+    saveUserData();
+}
+
+// Funkce pro zpracování kliknutí na tlačítko
+function handleButtonClick(event) {
+    event.preventDefault();
+    const form = event.target.closest("form");
+    if (form) saveUserData();
+}
+
+// Funkce pro zpracování dotyku na tlačítko
+function handleButtonTouch(event) {
+    event.preventDefault();
+    const form = event.target.closest("form");
+    if (form) saveUserData();
+}
+
 async function saveUserData() {
-    const age = document.getElementById('age').value;
-    const gender = document.getElementById('gender').value;
-    const education = document.getElementById('education').value;
-    const occupation = document.getElementById('occupation').value;
-    const nativeLanguage = document.getElementById('nativeLanguage').value;
+    const age = document.getElementById('age')?.value;
+    const gender = document.getElementById('gender')?.value;
+    const education = document.getElementById('education')?.value;
+    const occupation = document.getElementById('occupation')?.value;
+    const nativeLanguage = document.getElementById('nativeLanguage')?.value;
 
     if (age && gender && education && occupation && nativeLanguage) {
+        showVisualFeedback("Odesílání údajů...", "info");
         try {
             const userRef = await addDoc(collection(db, "users"), {
                 age, gender, education, occupation, nativeLanguage,
@@ -79,9 +123,10 @@ async function saveUserData() {
             window.location.href = 'adjectiverating.html';
         } catch (error) {
             console.error("Chyba při ukládání do Firestore:", error);
+            showVisualFeedback("Nastala chyba při ukládání dat. Zkuste prosím znovu.", "error");
         }
     } else {
-        alert("Vyplňte všechna pole.");
+        showVisualFeedback("Vyplňte prosím všechna pole.", "error");
     }
 }
 
