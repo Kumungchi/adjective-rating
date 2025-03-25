@@ -192,17 +192,16 @@ function confirmPracticeRating() {
     let allRated = true;
 
     practiceContainers.forEach(container => {
-        const valenceGroup = container.querySelector('.control-group:nth-child(1)');
-        const arousalGroup = container.querySelector('.control-group:nth-child(2)');
-
-        // Kontrola, zda je dataset.selectedValue nastaven pro obě skupiny
-        if (!valenceGroup?.dataset?.selectedValue || !arousalGroup?.dataset?.selectedValue) {
-            allRated = false;
-        }
+        const controlGroups = container.querySelectorAll('.control-group');
+        controlGroups.forEach(group => {
+            if (!group.dataset.selectedValue) {
+                allRated = false;
+            }
+        });
     });
 
     if (allRated) {
-        showVisualFeedback('Hodnocení testovacích slov "Šťastný" a "Smutný" bylo úspěšně potvrzeno. Pokračujte k dotazníku.', "success");
+        showVisualFeedback('✅ Hodnocení testovacích slov bylo potvrzeno. Pokračujte k dotazníku.', "success");
 
         const form = document.getElementById("demographicSurvey");
         if (form) {
@@ -214,27 +213,44 @@ function confirmPracticeRating() {
 }
 
 function showVisualFeedback(message, type = "success") {
+    const oldMessage = document.querySelector('.feedback-message');
+    if (oldMessage) oldMessage.remove(); // Odstraníme starou zprávu, pokud existuje
+
     const feedbackElement = document.createElement('div');
     feedbackElement.className = 'feedback-message';
     feedbackElement.innerText = message;
 
-    // Nastavení barvy podle typu zprávy
-    feedbackElement.style.backgroundColor = type === "success" ? "#4caf50" : "#e53935"; // zelená nebo červená
+    feedbackElement.style.backgroundColor = type === "success" ? "#4caf50" : "#e53935"; // Zelená nebo červená
+    feedbackElement.style.color = 'white';
+    feedbackElement.style.padding = '14px 24px';
+    feedbackElement.style.borderRadius = '8px';
+    feedbackElement.style.position = 'fixed';
+    feedbackElement.style.top = '10px';
+    feedbackElement.style.left = '50%';
+    feedbackElement.style.transform = 'translateX(-50%)';
+    feedbackElement.style.zIndex = '9999';
+    feedbackElement.style.boxShadow = '0 4px 12px rgba(0,0,0,0.25)';
+    feedbackElement.style.fontSize = '1rem';
+    feedbackElement.style.maxWidth = '90vw';
+    feedbackElement.style.textAlign = 'center';
 
     document.body.appendChild(feedbackElement);
 
-    // Automatické odstranění zprávy po 4 sekundách
     setTimeout(() => {
         feedbackElement.remove();
-    }, 4000);
+    }, 4000); // Zpráva zmizí po 4 sekundách
 }
 
 window.selectOption = selectOption;
 window.confirmPracticeRating = confirmPracticeRating;
 
 function selectOption(button) {
-    const buttons = button.parentElement.querySelectorAll('.rating-button');
+    const group = button.closest(".control-group"); // Najdeme rodičovskou skupinu (valence nebo arousal)
+    if (!group) return;
+
+    const buttons = group.querySelectorAll('.rating-button');
     buttons.forEach(btn => btn.classList.remove('selected'));
+
     button.classList.add('selected');
-    button.parentElement.dataset.selectedValue = button.dataset.value;
+    group.dataset.selectedValue = button.dataset.value; // Nastavíme hodnotu dataset.selectedValue
 }
