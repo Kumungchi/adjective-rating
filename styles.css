@@ -292,16 +292,40 @@ footer {
 /* Styl pro vizuální zpětnou vazbu */
 .feedback-message {
     position: fixed;
-    bottom: 20px;
+    top: 1.5rem;
     left: 50%;
     transform: translateX(-50%);
-    background-color: #4caf50;
+    background-color: #4caf50; /* Výchozí: zelená, ale JS to přepíše podle typu */
     color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    font-size: 16px;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    max-width: 90vw;
+    width: fit-content;
+    text-align: center;
+    opacity: 0;
+    animation: fadeInSlideDown 0.3s ease forwards, fadeOut 0.5s ease 3s forwards;
+}
+
+/* Animace pro přirozený nástup a zmizení */
+@keyframes fadeInSlideDown {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -20%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0%);
+    }
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+    }
 }
 
 /* Přidání stylů pro centrování */
