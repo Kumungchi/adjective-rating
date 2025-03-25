@@ -17,6 +17,7 @@ body {
     align-items: center;
     min-height: 100vh;
     overflow-x: hidden;
+    overflow-y: auto; /* Přidáno pro scrollování */
 }
 
 /* Header Styles */
@@ -247,14 +248,6 @@ footer {
     display: inline-block;
     width: 1em;
     height: 1em;
-    background-color: var(--accent-color); /* Changed to use accent color */
-    color: white;
-    border-radius: 50%;
-    text-align: center;
-    line-height: 1em;
-    font-weight: bold;
-    cursor: pointer;
-    margin-left: 0.5em;
 }
 
 .info-icon-container {

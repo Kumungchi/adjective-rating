@@ -2,6 +2,12 @@ document.addEventListener("DOMContentLoaded", function() {
     console.log("✅ DOM plně načten!");
 
     if (window.location.pathname.includes("adjectiverating.html")) {
+        let userId = localStorage.getItem("userId");
+        if (!userId) {
+            alert("Nebyl nalezen identifikátor účastníka. Pravděpodobně jste přeskočili dotazník.");
+            window.location.href = "index.html";
+        }
+
         const adjectiveDisplay = document.getElementById('adjectiveDisplay');
         if (!adjectiveDisplay) {
             console.error("❌ Element 'adjectiveDisplay' nebyl nalezen v DOMu!");
@@ -45,6 +51,20 @@ document.addEventListener("DOMContentLoaded", function() {
         // Načtení slov z Firestore
         fetchAdjectives();
     }
+
+    const confirmPracticeButton1 = document.getElementById("confirmPracticeButton1");
+    const confirmPracticeButton2 = document.getElementById("confirmPracticeButton2");
+
+    if (confirmPracticeButton1) {
+        confirmPracticeButton1.addEventListener("click", confirmPracticeRating);
+    }
+
+    if (confirmPracticeButton2) {
+        confirmPracticeButton2.addEventListener("click", confirmPracticeRating);
+    }
+
+    // Volání synchronizace při načtení stránky
+    syncRatingsWithFirestore();
 });
 
 // Import Firebase modules from CDN
@@ -291,19 +311,6 @@ function showFeedbackMessage(message) {
 function displayErrorMessage(message) {
     alert(message);
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-    const confirmPracticeButton1 = document.getElementById("confirmPracticeButton1");
-    const confirmPracticeButton2 = document.getElementById("confirmPracticeButton2");
-
-    if (confirmPracticeButton1) {
-        confirmPracticeButton1.addEventListener("click", confirmPracticeRating);
-    }
-
-    if (confirmPracticeButton2) {
-        confirmPracticeButton2.addEventListener("click", confirmPracticeRating);
-    }
-});
 
 // Přidání JavaScript kódu pro zvýraznění vybraných tlačítek a zobrazení potvrzovací zprávy
 function selectOption(button) {
