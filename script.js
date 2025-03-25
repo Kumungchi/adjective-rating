@@ -327,6 +327,12 @@ function confirmPracticeRating() {
         const arousalGroup = container.querySelector('.control-group:nth-child(2)'); // Opraveno na správný index
         const valenceGroup = container.querySelector('.control-group:nth-child(1)'); // Opraveno na správný index
 
+        if (!arousalGroup || !valenceGroup) {
+            console.error("❌ Element 'control-group' nebyl nalezen v DOMu!");
+            allRated = false;
+            return;
+        }
+
         if (!arousalGroup.dataset.selectedValue || !valenceGroup.dataset.selectedValue) {
             allRated = false;
         }
@@ -344,6 +350,16 @@ function showVisualFeedback(message) {
     const feedbackElement = document.createElement('div');
     feedbackElement.className = 'feedback-message';
     feedbackElement.innerText = message;
+    feedbackElement.style.backgroundColor = 'green'; // Nastavení zeleného pozadí
+    feedbackElement.style.color = 'white'; // Nastavení bílé barvy textu
+    feedbackElement.style.padding = '10px'; // Nastavení paddingu
+    feedbackElement.style.borderRadius = '5px'; // Nastavení zaoblených rohů
+    feedbackElement.style.position = 'fixed'; // Fixní pozice
+    feedbackElement.style.top = '10px'; // Umístění nahoře
+    feedbackElement.style.left = '50%'; // Umístění uprostřed
+    feedbackElement.style.transform = 'translateX(-50%)'; // Vycentrování
+    feedbackElement.style.zIndex = '1000'; // Z-index pro překrytí ostatních prvků
+
     document.body.appendChild(feedbackElement);
 
     setTimeout(() => {
