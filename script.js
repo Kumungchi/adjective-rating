@@ -366,8 +366,9 @@ function showVisualFeedback(message, color) {
     feedbackElement.style.left = '50%'; // Umístění uprostřed
     feedbackElement.style.transform = 'translateX(-50%)'; // Vycentrování
     feedbackElement.style.zIndex = '1000'; // Z-index pro překrytí ostatních prvků
-    feedbackElement.style.maxWidth = '300px'; // Maximální šířka
+    feedbackElement.style.maxWidth = 'none'; // Maximální šířka
     feedbackElement.style.textAlign = 'center'; // Zarovnání textu na střed
+    feedbackElement.style.whiteSpace = 'nowrap'; // Zamezení zalomení textu
 
     document.body.appendChild(feedbackElement);
 
