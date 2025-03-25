@@ -190,19 +190,26 @@ function highlightButton(button) {
 function confirmPracticeRating() {
     const practiceContainers = document.querySelectorAll('.practiceWordContainer');
     let allRated = true;
+
     practiceContainers.forEach(container => {
         const valenceGroup = container.querySelector('.control-group:nth-child(1)');
         const arousalGroup = container.querySelector('.control-group:nth-child(2)');
+
+        // Kontrola, zda je dataset.selectedValue nastaven pro obě skupiny
         if (!valenceGroup?.dataset?.selectedValue || !arousalGroup?.dataset?.selectedValue) {
             allRated = false;
         }
     });
+
     if (allRated) {
-        showVisualFeedback('Hodnocení testovacích slov bylo potvrzeno. Pokračujte k dotazníku.', 'success');
+        showVisualFeedback('Hodnocení testovacích slov "Šťastný" a "Smutný" bylo úspěšně potvrzeno. Pokračujte k dotazníku.', "success");
+
         const form = document.getElementById("demographicSurvey");
-        if (form) form.scrollIntoView({ behavior: "smooth" });
+        if (form) {
+            form.scrollIntoView({ behavior: "smooth" });
+        }
     } else {
-        showVisualFeedback('Prosím, ohodnoťte obě testovací slova před potvrzením.', 'error');
+        showVisualFeedback('❗ Prosím, ohodnoťte obě testovací slova "Šťastný" a "Smutný" před potvrzením.', "error");
     }
 }
 
