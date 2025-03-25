@@ -246,8 +246,8 @@ function nextWord() {
 
 // Set up event listeners for rating buttons
 function setupEventListeners() {
-    const arousalButtons = document.querySelectorAll(".control-group:nth-child(1) .rating-button");
-    const valenceButtons = document.querySelectorAll(".control-group:nth-child(2) .rating-button");
+    const arousalButtons = document.querySelectorAll(".control-group:nth-child(2) .rating-button");
+    const valenceButtons = document.querySelectorAll(".control-group:nth-child(1) .rating-button");
 
     arousalButtons.forEach(button => {
         button.addEventListener("click", () => {
@@ -331,8 +331,8 @@ function confirmPracticeRating() {
     let allRated = true;
 
     practiceContainers.forEach(container => {
-        const arousalGroup = container.querySelector('.control-group:nth-child(2)'); // Opraveno na správný index
-        const valenceGroup = container.querySelector('.control-group:nth-child(1)'); // Opraveno na správný index
+        const arousalGroup = container.querySelector('.control-group:nth-child(2)');
+        const valenceGroup = container.querySelector('.control-group:nth-child(1)');
 
         if (!arousalGroup || !valenceGroup) {
             console.error("❌ Element 'control-group' nebyl nalezen v DOMu!");
@@ -346,18 +346,18 @@ function confirmPracticeRating() {
     });
 
     if (allRated) {
-        showVisualFeedback('Hodnocení testovacích slov "Šťastný" a "Smutný" bylo úspěšně potvrzeno. Nyní můžete pokračovat k dotazníku.');
+        showVisualFeedback('Hodnocení testovacích slov "Šťastný" a "Smutný" bylo úspěšně potvrzeno. Nyní můžete pokračovat k dotazníku.', 'green');
     } else {
-        showVisualFeedback('Prosím, ohodnoťte obě testovací slova "Šťastný" a "Smutný" před potvrzením.');
+        showVisualFeedback('Prosím, ohodnoťte obě testovací slova "Šťastný" a "Smutný" před potvrzením.', 'red');
     }
 }
 
 // Funkce pro zobrazení vizuální zpětné vazby
-function showVisualFeedback(message) {
+function showVisualFeedback(message, color) {
     const feedbackElement = document.createElement('div');
     feedbackElement.className = 'feedback-message';
     feedbackElement.innerText = message;
-    feedbackElement.style.backgroundColor = 'green'; // Nastavení zeleného pozadí
+    feedbackElement.style.backgroundColor = color; // Nastavení barvy pozadí
     feedbackElement.style.color = 'white'; // Nastavení bílé barvy textu
     feedbackElement.style.padding = '10px'; // Nastavení paddingu
     feedbackElement.style.borderRadius = '5px'; // Nastavení zaoblených rohů
@@ -366,6 +366,8 @@ function showVisualFeedback(message) {
     feedbackElement.style.left = '50%'; // Umístění uprostřed
     feedbackElement.style.transform = 'translateX(-50%)'; // Vycentrování
     feedbackElement.style.zIndex = '1000'; // Z-index pro překrytí ostatních prvků
+    feedbackElement.style.maxWidth = '300px'; // Maximální šířka
+    feedbackElement.style.textAlign = 'center'; // Zarovnání textu na střed
 
     document.body.appendChild(feedbackElement);
 
