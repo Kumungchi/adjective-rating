@@ -349,6 +349,21 @@ footer {
 
 .concept-content h3 {
     text-align: center; /* Nadpis zůstane zarovnaný na střed */
+    margin-bottom: 1.5rem;
+}
+
+.concept-item h4 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.concept-item p {
+    margin-bottom: 1rem;
+}
+
+.concept-item ul {
+    margin-left: 1.5rem;
+    list-style-type: disc;
 }
 
 /* Responsive Design Adjustments */

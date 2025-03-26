@@ -141,6 +141,7 @@ async function fetchAdjectives() {
         shuffleArray(words);
         displayWord();
     } catch (error) {
+        console.error("Chyba při načítání slov:", error);
         document.getElementById("adjectiveDisplay").innerHTML = "<h2>Chyba při načítání slov!</h2>";
     }
 }

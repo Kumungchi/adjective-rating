@@ -128,6 +128,9 @@ body#adjectiveRatingContainer {
     cursor: pointer;
     margin-top: 1.5rem;
     transition: all 0.3s ease;
+    display: block; /* Zajistí, že tlačítko bude viditelné */
+    width: 100%; /* Přizpůsobí šířku */
+    max-width: 200px;
 }
 
 #adjectiveRatingContainer .confirmation-button:hover {
@@ -257,6 +260,23 @@ body#adjectiveRatingContainer {
         width: 90%;
         margin-top: 30%;
     }
+
+    .rating-button {
+        font-size: 1rem;
+        padding: 10px 16px;
+        max-width: 150px;
+    }
+
+    .confirmation-button {
+        font-size: 1rem;
+        padding: 12px 20px;
+        margin-top: 1rem;
+    }
+
+    .tooltip {
+        width: 180px;
+        font-size: 0.9rem;
+    }
 }
 
 @media (max-width: 320px) {
@@ -318,18 +338,30 @@ body#adjectiveRatingContainer {
 
 .tooltip {
     visibility: hidden;
-    width: 260px;
+    width: 200px;
     background-color: #333;
-    color: #fff !important; /* Přidáno pro lepší čitelnost */
-    text-align: left;
+    color: #fff;
+    text-align: center;
     border-radius: 6px;
-    padding: 10px;
+    padding: 0.5em;
     position: absolute;
-    bottom: 30px;
+    z-index: 1;
+    bottom: 125%;
     left: 50%;
-    transform: translateX(-50%);
+    margin-left: -100px;
     opacity: 0;
     transition: opacity 0.3s;
+}
+
+.tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #333 transparent transparent transparent;
 }
 
 .info-icon-container:hover .tooltip {
