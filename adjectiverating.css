@@ -338,13 +338,14 @@ body#adjectiveRatingContainer {
     --accent-color: #808080;
 }
 
-/* Posunutí info ikony blíže ke středu */
+/* Posunutí info ikony do středu a výše */
 .info-icon-container {
     position: relative;
-    display: inline-block;
+    display: block;  /* Změněno z inline-block na block pro lepší centrování */
     text-align: center;
-    margin: 0 auto; /* Vycentrování */
-    transform: translateY(-10px); /* Posun mírně nahoru */
+    margin: 5px auto 15px auto; /* Upravené okraje pro lepší pozici */
+    transform: translateY(0); /* Odstraněn posun dolů */
+    width: 24px; /* Explicitní šířka pro lepší centrování */
 }
 
 .info-icon {
@@ -361,18 +362,18 @@ body#adjectiveRatingContainer {
     font-size: 14px;
 }
 
-/* Tooltip styling */
+/* Tooltip styling - upravená pozice */
 .tooltip {
     visibility: hidden;
-    width: 220px; /* Mírně širší pro lepší čitelnost */
+    width: 235px; /* Zvětšená šířka pro lepší čitelnost */
     background-color: #333;
     color: #fff;
     text-align: center;
     border-radius: 6px;
-    padding: 0.5em;
+    padding: 8px; /* Větší padding */
     position: absolute;
-    z-index: 1;
-    bottom: 125%; /* Posun nad ikonou */
+    z-index: 10; /* Zvýšený z-index pro jistotu */
+    bottom: 130%; /* Větší odsazení nad ikonou */
     left: 50%;
     transform: translateX(-50%); /* Vycentrování tooltipu */
     opacity: 0;
