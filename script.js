@@ -132,8 +132,11 @@ async function saveUserData() {
 
 async function fetchAdjectives() {
     try {
+        console.log("⏳ Načítání slov z Firestore...");
         const querySnapshot = await getDocs(collection(db, "adjectives"));
         words = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        console.log("✅ Načtená slova:", words);
+
         if (words.length === 0) {
             document.getElementById("adjectiveDisplay").innerHTML = "<h2>Chyba: Nebyla nalezena žádná slova.</h2>";
             return;
@@ -141,7 +144,7 @@ async function fetchAdjectives() {
         shuffleArray(words);
         displayWord();
     } catch (error) {
-        console.error("Chyba při načítání slov:", error);
+        console.error("❌ Chyba při načítání slov:", error);
         document.getElementById("adjectiveDisplay").innerHTML = "<h2>Chyba při načítání slov!</h2>";
     }
 }
@@ -299,4 +302,19 @@ function selectOption(button) {
 
     button.classList.add('selected');
     group.dataset.selectedValue = button.dataset.value; // Nastavíme hodnotu dataset.selectedValue
+}
+
+function setupConfirmButton() {
+    const confirmButton = document.getElementById("confirmButton");
+    if (confirmButton) {
+        confirmButton.addEventListener("click", () => {
+            if (currentValence && currentArousal) {
+                rateWord(currentValence, currentArousal);
+            } else {
+                alert("Musíte vybrat jak valenci, tak arousal.");
+            }
+        });
+    } else {
+        console.warn("❗ Tlačítko potvrdit nebylo nalezeno.");
+    }
 }
