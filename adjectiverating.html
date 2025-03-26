@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <title>Hodnocení českých přídavných jmen</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css"> <!-- Original shared styles -->
-    <link rel="stylesheet" href="adjectiverating.css"> <!-- Specific styles for adjective rating page -->
+    <link rel="stylesheet" href="styles.css"> 
+    <link rel="stylesheet" href="adjectiverating.css">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <script type="module" src="script.js" defer></script>
 </head>
@@ -16,10 +16,9 @@
     
     <main>
         <section id="adjectiveDisplay" class="centered-content">
-            <h2>Loading...</h2> <!-- Toto by měl JS nahradit slovem -->
+            <h2>Loading...</h2>
         </section>
 
-        <!-- Progress Indicator -->
         <div id="progress-container">
             <span id="progress-text">0/15</span>
         </div>
@@ -50,12 +49,12 @@
                 </div>
             </div>
         </section>
-
+        
+        <!-- Přemístěno blíže k ovládacím prvkům -->
         <div class="confirm-container">
             <button id="confirmButton" class="confirmation-button">Potvrdit</button>
         </div>
 
-        <!-- Modal okno po 15 hodnoceních -->
         <div id="modal" class="modal">
             <div class="modal-content">
                 <span class="close-button">&times;</span>

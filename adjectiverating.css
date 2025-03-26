@@ -116,21 +116,23 @@ body#adjectiveRatingContainer {
     display: flex;
     justify-content: center;
     width: 100%;
-    margin-top: 20px;
+    margin-top: 10px; /* Zmenšená mezera mezi tlačítky a potvrzovacím tlačítkem */
+    margin-bottom: 60px; /* Prostor před patičkou */
 }
 
 #adjectiveRatingContainer .confirmation-button {
-    background-color: #bfbfbf;
+    background-color: #808080; /* Tmavší odstín pro lepší viditelnost */
     color: white;
     border: none;
     border-radius: 5px;
     padding: 0.8rem 1.2rem;
     cursor: pointer;
-    margin-top: 1.5rem;
     transition: all 0.3s ease;
-    display: block; /* Zajistí, že tlačítko bude viditelné */
-    width: 100%; /* Přizpůsobí šířku */
+    display: block;
+    width: 100%;
     max-width: 200px;
+    font-weight: bold; /* Zvýraznění tlačítka */
+    margin-top: 0; /* Žádná další mezera nahoře */
 }
 
 #adjectiveRatingContainer .confirmation-button:hover {
@@ -227,6 +229,7 @@ body#adjectiveRatingContainer {
         flex-wrap: wrap;
         justify-content: space-between;
         gap: 1rem;
+        margin-bottom: 5px; /* Menší mezera pod ovládacími prvky */
     }
 
     #adjectiveRatingContainer .button-container {
@@ -235,13 +238,10 @@ body#adjectiveRatingContainer {
     }
 
     #adjectiveRatingContainer .confirmation-button {
-        position: fixed; /* Fixní pozice pro viditelnost */
-        bottom: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 10;
-        width: auto;
+        /* Už není fixní pozice, která způsobovala problémy */
+        position: static; 
         max-width: 300px;
+        margin: 10px auto 70px auto; /* Přidáno více místa dole pro footer */
     }
 
     #adjectiveRatingContainer #ratingPage {
@@ -288,11 +288,16 @@ body#adjectiveRatingContainer {
         font-size: 1rem;
         padding: 12px 20px;
         margin-top: 1rem;
+        margin-bottom: 60px; /* Přidáno více místa dole pro footer */
     }
 
     .tooltip {
         width: 180px;
         font-size: 0.9rem;
+    }
+
+    #adjectiveRatingContainer .button-container {
+        flex-direction: row; /* Tlačítka vedle sebe */
     }
 }
 
