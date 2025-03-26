@@ -497,3 +497,65 @@ footer {
     line-height: 1.4;
 }
 
+/* Styly pro děkovnou stránku */
+#thankyou {
+    width: 95%;
+    max-width: 800px;
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+#thankyou h2 {
+    color: #333;
+    font-size: 1.8em;
+    margin-bottom: 1rem;
+}
+
+#thankyou p {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.info-box {
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.info-box h3 {
+    color: #333;
+    font-size: 1.4em;
+    margin-bottom: 1rem;
+}
+
+.info-box.highlight {
+    background-color: #f0f7ff;
+    border-left: 4px solid #4a76b8;
+}
+
+.button-container {
+    margin-top: 2rem;
+}
+
+.return-button {
+    display: inline-block;
+    background-color: var(--accent-color);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.return-button:hover {
+    background-color: #666;
+    transform: scale(1.02);
+}
+

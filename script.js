@@ -158,6 +158,10 @@ function shuffleArray(array) {
 
 function displayWord() {
     const display = document.getElementById("adjectiveDisplay");
+    
+    // Reset všech výběrů před zobrazením nového slova
+    resetSelections();
+    
     if (currentWordIndex < totalAdjectives) {
         const wordObj = words[currentWordIndex];
         display.innerHTML = `<h2>${wordObj.word}</h2>`;
@@ -166,6 +170,23 @@ function displayWord() {
         display.innerHTML = `<h2>Děkujeme za hodnocení!</h2><p>Kontakt: Matias.Bunnik.s01@osu.cz</p>`;
         syncRatingsWithFirestore();
     }
+}
+
+// Přidání nové funkce pro reset výběrů
+function resetSelections() {
+    // Reset všech označených tlačítek
+    document.querySelectorAll('.rating-button').forEach(btn => {
+        btn.classList.remove('selected');
+    });
+    
+    // Reset dataset hodnot u control-group elementů
+    document.querySelectorAll('.control-group').forEach(group => {
+        group.dataset.selectedValue = '';
+    });
+    
+    // Reset globálních proměnných
+    currentValence = null;
+    currentArousal = null;
 }
 
 function rateWord(valence, arousal) {
@@ -207,9 +228,12 @@ function nextWord() {
 
 function submitRatingsToFirestore() {
     showVisualFeedback("Děkujeme za účast!", "success");
-    const modal = document.getElementById('modal');
-    if (modal) modal.style.display = 'block';
     localStorage.removeItem('ratings');
+    
+    // Přesměrování na děkovnou stránku
+    setTimeout(() => {
+        window.location.href = 'thankyou.html';
+    }, 1000); // Krátké zpoždění, aby uživatel viděl zpětnou vazbu
 }
 
 function setupEventListeners() {
