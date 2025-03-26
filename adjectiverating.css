@@ -223,8 +223,25 @@ body#adjectiveRatingContainer {
     }
 
     #adjectiveRatingContainer #controls {
-        flex-direction: column;
+        flex-direction: row; /* Umístí tlačítka vedle sebe */
+        flex-wrap: wrap;
+        justify-content: space-between;
         gap: 1rem;
+    }
+
+    #adjectiveRatingContainer .button-container {
+        flex-direction: row; /* Tlačítka vedle sebe */
+        gap: 0.5rem;
+    }
+
+    #adjectiveRatingContainer .confirmation-button {
+        position: fixed; /* Fixní pozice pro viditelnost */
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+        width: auto;
+        max-width: 300px;
     }
 
     #adjectiveRatingContainer #ratingPage {
